@@ -13,7 +13,9 @@
     "electron:dev": "electron .",
     "build:win": "electron-builder --win",
     "build:dir": "electron-builder --win --dir",
-    "generate:logo": "node scripts/generate-logo-assets.mjs"
+    "build:portable": "electron-builder --win portable",
+    "generate:logo": "node scripts/generate-logo-assets.mjs",
+    "generate:screenshots": "node scripts/generate-screenshots.mjs"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -47,7 +49,10 @@
       "!scripts/**",
       "!data/**",
       "!.git/**",
-      "!**/*.md"
+      "!**/*.md",
+      "build/icon.png",
+      "build/icon.ico",
+      "assets/logo/**"
     ],
     "asar": true,
     "win": {
@@ -57,10 +62,20 @@
           "arch": [
             "x64"
           ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "icon": "build/icon.ico",
+      "signAndEditExecutable": false,
       "artifactName": "NexusAI-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "NexusAI-Portable-${version}.${ext}"
     },
     "nsis": {
       "oneClick": false,
@@ -71,7 +86,8 @@
       "shortcutName": "NexusAI",
       "installerIcon": "build/icon.ico",
       "uninstallerIcon": "build/icon.ico",
-      "installerHeaderIcon": "build/icon.ico"
+      "installerHeaderIcon": "build/icon.ico",
+      "uninstallDisplayName": "NexusAI"
     }
   }
 }

@@ -17,9 +17,18 @@ function getUserDataDir() {
   return dir;
 }
 
+function getAppRoot() {
+  return isDev ? path.join(__dirname, "..") : app.getAppPath();
+}
+
 function getStaticRoot() {
-  if (isDev) return path.join(__dirname, "..");
-  return path.join(process.resourcesPath, "app");
+  return getAppRoot();
+}
+
+function resolveResource(...parts) {
+  const candidate = path.join(getAppRoot(), ...parts);
+  if (fs.existsSync(candidate)) return candidate;
+  return path.join(process.resourcesPath, ...parts);
 }
 
 async function bootServer() {
@@ -35,7 +44,7 @@ async function bootServer() {
 }
 
 function createMainWindow(port) {
-  const iconPath = path.join(__dirname, "..", "build", "icon.png");
+  const iconPath = resolveResource("build", "icon.png");
 
   mainWindow = new BrowserWindow({
     width: 1440,
@@ -74,7 +83,7 @@ function createMainWindow(port) {
 function registerIpc() {
   ipcMain.handle("nexus-show-notification", (_event, { title, body }) => {
     if (!Notification.isSupported()) return false;
-    const n = new Notification({ title: title || "NexusAI", body: body || "", icon: path.join(__dirname, "..", "build", "icon.png") });
+    const n = new Notification({ title: title || "NexusAI", body: body || "", icon: resolveResource("build", "icon.png") });
     n.show();
     return true;
   });

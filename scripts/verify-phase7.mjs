@@ -154,6 +154,7 @@ function findInstaller() {
 
 async function validateBuildArtifacts() {
   const issues = [];
+  const installer = findInstaller();
   const unpacked = path.join("dist", "win-unpacked", "NexusAI.exe");
   if (!installer && !fs.existsSync(unpacked)) {
     issues.push("Windows installer (.exe) not found — run npm run build:win");

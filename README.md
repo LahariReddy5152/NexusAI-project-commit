@@ -1,143 +1,348 @@
-NexusAI
+<p align="center">
+  <img src="assets/logo/nexusai-horizontal-transparent.svg" alt="NexusAI" width="420" />
+</p>
 
-NexusAI is an AI Engineer Learning Platform designed to help users learn AI engineering, track projects, practice interviews, and interact with an AI mentor system.
+<p align="center">
+  <strong>Learn · Build · Grow</strong><br />
+  A premium AI engineering learning and career platform for developers.
+</p>
 
-The platform includes:
+<p align="center">
+  <a href="https://github.com/LahariReddy5152/NexusAI-project-commit"><img src="https://img.shields.io/badge/version-1.0.0-8b5cf6?style=flat-square" alt="Version" /></a>
+  <a href="https://github.com/LahariReddy5152/NexusAI-project-commit"><img src="https://img.shields.io/badge/platform-Web%20%7C%20Windows-0284c7?style=flat-square" alt="Platform" /></a>
+  <a href="https://github.com/LahariReddy5152/NexusAI-project-commit/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-ISC-fb7185?style=flat-square" alt="License" /></a>
+</p>
 
-Authentication system
-Learning dashboard
-AI mentor chatbot
-Project progress tracking
-Job preparation section
-Interview preparation
-Responsive modern UI
-Features
-Authentication
-Signup system
-Login system
-Local storage authentication
-Role selection
-Dashboard
-User statistics
-Learning progress
-Daily streak tracking
-Job readiness score
-Learning Platform
-AI learning paths
-Python fundamentals
-Machine learning roadmap
-Prompt engineering section
-Backend/API learning
-Project Tracker
-Progress tracking
-Step completion system
-GitHub submission field
-Project notes
-AI Mentor
-AI chatbot UI
-AI mentor responses
-Real-time chat interface
-Interview Preparation
-AI interview questions
-Technical preparation section
-Job Mode
-AI Engineer skills roadmap
-Career preparation section
-Responsive UI
-Mobile responsive sidebar
-Dark themed interface
-Animated login page
-Glassmorphism cards
-Tech Stack
+---
 
-Frontend
+## Overview
 
-HTML
-CSS
-JavaScript
+**NexusAI** is a full-stack AI engineer learning platform that combines structured curricula, hands-on projects, interview preparation, career tooling, and an integrated Virtual Recruiter — all wrapped in a cosmic burgundy design system with optional Electron desktop delivery.
 
-Backend
+Whether you are breaking into AI engineering or leveling up for your next role, NexusAI provides a single workspace to study, build portfolio projects, practice interviews, analyze resumes, and get AI-powered mentorship.
 
-Node.js
-Express.js
+---
 
-Other Tools
+## Features
 
-LocalStorage
-REST APIs
-Folder Structure
-NexusAI/
-│
-├── index.html
-├── dashboard.html
-├── style.css
-├── script.js
-├── dashboard.js
-├── server.js
-├── package.json
-└── README.md
-Installation
+### Learning
+- Multi-track curricula: Python, SQL, Java, Spring Boot, AI fundamentals, prompt engineering, RAG, LangChain, OpenAI APIs
+- Interactive lesson workspace with code examples and progression tracking
+- Breadcrumb navigation and per-technology depth modules
 
-Clone repository:
+### Projects
+- Real-world project blueprints with step-by-step builders
+- GitHub integration: connect accounts, sync repos, track commits
+- Progress persistence across sessions
 
-git clone https://github.com/YOUR_USERNAME/nexusai.git
+### Interview Prep
+- Mock, technical, system design, and AI-track interview modes
+- Timed workspace with side-by-side question and answer panels
+- Speech evaluation and voice-aware mock sessions
 
-Install packages:
+### Career
+- Resume analyzer and job-tailoring engine
+- Career roadmap builder with skill milestones
+- Job readiness scoring and achievement tracking
 
+### Virtual Recruiter
+- Context-aware AI mentor across dashboard, coding lab, and interview modes
+- Mode-specific knowledge bases (coding assistant, interview coach, career advisor)
+- Chat history synced to backend
+
+### Platform
+- JWT authentication with signup, login, remember me, and password reset
+- SQLite persistence with user profiles, progress, and notifications
+- Native desktop notifications via Electron
+- Responsive glassmorphism UI with galaxy backgrounds
+- Official NexusAI logo system (SVG, PNG, ICO, ICNS, favicon)
+
+---
+
+## Architecture
+
+```mermaid
+flowchart TB
+  subgraph Client
+    Web[Browser UI]
+    Electron[Electron Shell]
+  end
+
+  subgraph Frontend
+    HTML[HTML Pages]
+    JS[ES Modules / src/]
+    CSS[Modular CSS]
+  end
+
+  subgraph Backend
+    Express[Express 5 API]
+    SQLite[(SQLite DB)]
+    Services[AI · Resume · GitHub · Speech]
+  end
+
+  Web --> HTML
+  Electron --> HTML
+  Electron -->|embedded server| Express
+  HTML --> JS
+  JS -->|REST + JWT| Express
+  Express --> SQLite
+  Express --> Services
+  Services -->|OpenAI optional| OpenAI[OpenAI API]
+```
+
+| Layer | Technology | Responsibility |
+|-------|------------|----------------|
+| **Presentation** | HTML, CSS, vanilla JS | Dashboard, learn portal, interview workspace |
+| **Desktop** | Electron 35 | Embedded server, native window, IPC bridge |
+| **API** | Express 5, JWT, bcrypt | Auth, progress, AI, resume, GitHub, speech |
+| **Data** | Node SQLite (`node:sqlite`) | Users, tokens, progress, notifications |
+| **Docs** | OpenAPI 3 + Swagger UI | Interactive API reference at `/api/docs` |
+
+---
+
+## Demo
+
+| | |
+|---|---|
+| **Web app** | `npm install && npm start` → http://localhost:5000 |
+| **Desktop (dev)** | `npm run electron` |
+| **Windows installer** | [Download v1.0.0](https://github.com/LahariReddy5152/NexusAI-project-commit/releases/tag/v1.0.0) (after release publish) |
+| **API docs** | http://localhost:5000/api/docs |
+| **Portfolio copy** | [docs/PORTFOLIO.md](docs/PORTFOLIO.md) |
+
+---
+
+## Screenshots
+
+| Login | Dashboard | Learn |
+|:-----:|:---------:|:-----:|
+| ![Login](docs/screenshots/01-login.png) | ![Dashboard](docs/screenshots/02-dashboard.png) | ![Learn](docs/screenshots/03-learn.png) |
+
+| Projects | Interview Prep | Career |
+|:--------:|:--------------:|:------:|
+| ![Projects](docs/screenshots/04-projects.png) | ![Interview](docs/screenshots/05-interview-prep.png) | ![Career](docs/screenshots/06-career.png) |
+
+| Virtual Recruiter | Desktop Installer |
+|:-----------------:|:-----------------:|
+| ![Virtual Recruiter](docs/screenshots/07-virtual-recruiter.png) | ![Installer](docs/screenshots/08-desktop-installer.png) |
+
+---
+
+## Installation
+
+### Prerequisites
+
+- **Node.js** 20+ (22 recommended for SQLite support)
+- **npm** 10+
+- **Windows 10/11** (for desktop installer builds)
+
+### Quick start (web)
+
+```bash
+git clone https://github.com/LahariReddy5152/NexusAI-project-commit.git
+cd NexusAI-project-commit
+npm install
+npm start
+```
+
+Open **http://localhost:5000** in your browser.
+
+### Environment variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `PORT` | HTTP server port | `5000` |
+| `OPENAI_API_KEY` | Live OpenAI responses (optional) | Rule-based fallback |
+| `NEXUSAI_DATA_DIR` | SQLite data directory | `./data` (web) or `%APPDATA%/nexusai/data` (desktop) |
+| `JWT_SECRET` | Token signing secret | Auto-generated in dev |
+
+Create a `.env` file in the project root (not committed):
+
+```env
+OPENAI_API_KEY=sk-your-key-here
+JWT_SECRET=your-production-secret
+```
+
+---
+
+## Desktop application
+
+NexusAI ships as a production Windows desktop app via Electron.
+
+### Development mode
+
+```bash
+npm run electron
+```
+
+Launches the Electron window with an embedded Express server on a dynamic local port.
+
+### Build installers
+
+```bash
+# NSIS installer + portable executable
+npm run build:win
+
+# Unpacked portable folder only
+npm run build:dir
+```
+
+### Production artifacts
+
+| Artifact | Path |
+|----------|------|
+| **Setup installer** | `dist/NexusAI-Setup-1.0.0.exe` |
+| **Portable app** | `dist/NexusAI-Portable-1.0.0.exe` |
+| **Unpacked executable** | `dist/win-unpacked/NexusAI.exe` |
+
+The installer provides:
+- Desktop shortcut
+- Start menu entry
+- Uninstall support via Windows Settings
+- Per-user installation with custom install location
+- Application icon from `build/icon.ico`
+
+### Desktop data locations
+
+| Item | Windows path |
+|------|----------------|
+| **App data** | `%APPDATA%\nexusai\data` |
+| **Database** | `%APPDATA%\nexusai\data\nexusai.db` |
+
+---
+
+## Technologies used
+
+| Category | Stack |
+|----------|-------|
+| **Frontend** | HTML5, CSS3 (modular), vanilla JavaScript (ES modules) |
+| **3D / visuals** | Three.js galaxy engine, glassmorphism, cosmic crimson theme |
+| **Backend** | Node.js, Express 5, `node:sqlite` |
+| **Auth** | JWT, bcryptjs |
+| **AI** | OpenAI API (optional) with rule-based fallback |
+| **Desktop** | Electron 35, electron-builder, NSIS |
+| **API docs** | OpenAPI 3, Swagger UI |
+| **Testing** | Playwright verification scripts |
+| **Assets** | SVG logo system, `@resvg/resvg-js`, png-to-ico |
+
+---
+
+## Folder structure
+
+```
+NexusAI-project-commit/
+├── assets/
+│   ├── images/              # Backgrounds and marketing art
+│   └── logo/                # Official logo SVG, PNG, ICO, ICNS, favicon
+├── build/                   # Electron build resources (icon.ico, icon.png)
+├── dist/                    # Production installers (generated)
+├── electron/
+│   ├── main.js              # Desktop entry, embedded server, window
+│   └── preload.js           # nexusDesktop IPC bridge
+├── server/
+│   ├── app.js               # Express application factory
+│   ├── db.js                # SQLite schema and queries
+│   ├── routes/api.js        # REST API routes
+│   ├── services/            # AI, resume, GitHub, speech services
+│   ├── openapi.yaml         # OpenAPI specification
+│   └── start.js             # Server bootstrap
+├── src/
+│   ├── authentication/      # Auth UI and JWT guard
+│   ├── background/          # Galaxy / login backgrounds
+│   ├── career/              # Roadmap and career panels
+│   ├── coding-lab/          # Code lab workspace
+│   ├── dashboard/           # Dashboard modules
+│   ├── interview/           # Interview prep tracks
+│   ├── learn/               # Learning portal and curricula
+│   ├── notifications/       # Notification center
+│   ├── profile/             # Profile and achievements
+│   ├── projects/            # Project builder and GitHub
+│   ├── shared/              # API client, styles, helpers
+│   └── virtual-recruiter/   # VR chat, modes, knowledge
+├── scripts/                 # Verification and asset generation
+├── index.html               # Login page
+├── dashboard.html           # Main application shell
+├── server.js                # Web server entry point
+├── style.css                # CSS entry (imports modular parts)
+└── package.json
+```
+
+---
+
+## Development setup
+
+```bash
+# Install dependencies
 npm install
 
-Run backend server:
-
+# Start web server (port 5000)
 npm start
 
-Open browser:
+# Start Electron desktop app
+npm run electron
 
-http://localhost:3000
-APIs
-Signup API
-POST /auth/signup
-Login API
-POST /auth/login
-Courses API
-GET /api/courses
-AI Mentor API
-POST /ask
+# Regenerate logo PNG / ICO / ICNS assets
+npm run generate:logo
 
-Current Features Completed
+# Run phase verification scripts
+node scripts/verify-phase6.mjs   # Backend integrations
+node scripts/verify-phase7.mjs   # Electron desktop
+node scripts/verify-phase8.mjs   # Production Windows release
+```
 
-Authentication UI
-Dashboard UI
-Learning sections
-Project progress system
-AI mentor chatbot
-Responsive sidebar
-Job preparation section
-Interview preparation section
-Backend API starter
-Dark mode UI structure
+### API documentation
 
-Future Improvements
+With the server running, open:
 
-MongoDB integration
-JWT authentication
-OpenAI API integration
-React migration
-Tailwind CSS upgrade
-Admin dashboard
-Real-time AI mentor
-Course video system
-Resume analyzer
-AI mock interview system
-Deployment
+- **Swagger UI:** http://localhost:5000/api/docs
+- **OpenAPI spec:** http://localhost:5000/api/openapi.yaml
 
-screenshots
+### Key API endpoints
 
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/auth/signup` | Register a new user |
+| `POST` | `/api/auth/login` | Login and receive JWT |
+| `POST` | `/api/auth/forgot-password` | Request password reset |
+| `GET` | `/api/auth/me` | Current user profile |
+| `POST` | `/api/ai/chat` | Virtual Recruiter / AI chat |
+| `POST` | `/api/resume/analyze` | ATS resume scoring |
+| `POST` | `/api/resume/tailor` | Job-specific resume tailoring |
+| `POST` | `/api/github/connect` | Link GitHub username |
+| `POST` | `/api/speech/evaluate` | Interview speech analysis |
+| `GET` | `/api/progress/courses` | Learning progress |
+| `GET` | `/api/notifications` | User notifications |
 
+All protected routes require `Authorization: Bearer <token>`.
 
-<img width="1536" height="1024" alt="nexus_screenshot_1" src="https://github.com/user-attachments/assets/34cef3a5-cefe-4dd6-a541-7e2d8522fcdc" />
+---
 
+## Future roadmap
 
+- [ ] macOS and Linux desktop builds (`.dmg`, AppImage)
+- [ ] Code signing for Windows and macOS distributions
+- [ ] Cloud deployment (Docker, CI/CD, hosted API)
+- [ ] Live OpenAI streaming responses in Virtual Recruiter
+- [ ] Video lesson integration and certificate generation
+- [ ] Team / classroom admin mode
+- [ ] Mobile-responsive PWA with offline lesson cache
+- [ ] Expanded analytics dashboard for learning insights
+- [ ] Plugin system for third-party curricula
 
-Author
+---
 
-Lahari Reddy
+## License
+
+This project is licensed under the **ISC License**.
+
+Copyright © 2026 [Lahari Reddy](https://github.com/LahariReddy5152)
+
+---
+
+## Author
+
+**Lahari Reddy** — [GitHub](https://github.com/LahariReddy5152) · [NexusAI Repository](https://github.com/LahariReddy5152/NexusAI-project-commit)
+
+<p align="center">
+  <img src="assets/logo/nexusai-icon.svg" alt="NexusAI icon" width="48" />
+</p>
