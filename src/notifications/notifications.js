@@ -65,6 +65,8 @@ export async function pushNotification(title, type = "info") {
     window.nexusDesktop.showNotification(title, type);
   }
 }
+
+export async function markNotificationRead(id) {
   if (useApi()) await markNotificationReadApi(id);
   else {
     const list = getNotificationsLocal().map((n) => (n.id === id ? { ...n, read: true } : n));
