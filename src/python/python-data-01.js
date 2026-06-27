@@ -8,7 +8,7 @@ export const lessons = [
         "explanation": "Variables are named containers that store data values. In Python, you don't need to declare the type of a variable - it's dynamically typed. Simply assign a value using the = operator.",
         "realWorldExample": "In a web application, variables store user information like name, age, and email. In data analysis, variables hold datasets and statistical results.",
         "syntax": "name = \"Lahari\"\\nage = 24\\nis_student = True\\n\\nx, y, z = 1, 2, 3\\n\\nage = \"twenty-four\"  # Valid in Python",
-        "practicalExample": "# Practical example: User profile\nuser_name = \"John Doe\"\nuser_age = 28\nuser_email = \"john@example.com\"\naccount_balance = 1500.50\n\n# Update variables\nuser_age = 29  # Birthday passed\naccount_balance += 500  # Deposit\n\nprint(f\"User: {user_name}, Age: {user_age}\")",
+        "practicalExample": "# Practical example: User profile\nuser_name = \"Lahari Reddy\"\nuser_age = 28\nuser_email = \"laharireddy5152@gmail.com\"\naccount_balance = 1500.50\n\n# Update variables\nuser_age = 29  # Birthday passed\naccount_balance += 500  # Deposit\n\nprint(f\"User: {user_name}, Age: {user_age}\")",
         "bestPractices": [
             "Use descriptive names (user_age instead of x)",
             "Follow snake_case naming convention",
