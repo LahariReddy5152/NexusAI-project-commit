@@ -902,3 +902,130 @@ body.dashboard-body.theme-dark .glass-card {
   color: #fdf2f8 !important;
   border-color: rgba(199, 123, 127, 0.35) !important;
 }
+
+/* Final release contrast pass */
+.dashboard-body:not(.theme-dark) .learn-tech-meta h3,
+.dashboard-body:not(.theme-dark) .learn-tech-meta p,
+.dashboard-body:not(.theme-dark) #workspaceProgressLabel,
+.dashboard-body:not(.theme-dark) .lesson-label,
+.dashboard-body:not(.theme-dark) .learn-left-panel .stat-meta {
+  color: #1e293b !important;
+  opacity: 1 !important;
+}
+
+.dashboard-body:not(.theme-dark) .right-panel-nav-btns button,
+.dashboard-body:not(.theme-dark) .mark-complete-btn {
+  opacity: 1 !important;
+}
+
+.dashboard-body:not(.theme-dark) .mark-complete-btn.completed {
+  opacity: 1 !important;
+}
+
+.dashboard-body:not(.theme-dark) .project-status-badge,
+.dashboard-body:not(.theme-dark) .status-new,
+.dashboard-body:not(.theme-dark) .status-progress,
+.dashboard-body:not(.theme-dark) .status-ready,
+.dashboard-body:not(.theme-dark) .status-complete {
+  color: #1e293b !important;
+  font-weight: 700;
+}
+
+.dashboard-body:not(.theme-dark) .status-new {
+  background: rgba(192, 132, 252, 0.28) !important;
+}
+
+.dashboard-body:not(.theme-dark) .status-progress {
+  background: rgba(251, 113, 133, 0.22) !important;
+}
+
+.dashboard-body:not(.theme-dark) .project-card-bar,
+.dashboard-body:not(.theme-dark) .glass-progress {
+  background: rgba(148, 163, 184, 0.35) !important;
+}
+
+.dashboard-body:not(.theme-dark) .project-card-bar .progress-fill,
+.dashboard-body:not(.theme-dark) .workspace-progress-bar .progress-fill {
+  background: linear-gradient(90deg, #fb7185, #c084fc, #38bdf8) !important;
+  min-height: 6px;
+}
+
+.dashboard-body:not(.theme-dark) .level-badge.level-beginner,
+.dashboard-body:not(.theme-dark) .level-badge.level-intermediate,
+.dashboard-body:not(.theme-dark) .level-badge.level-advanced,
+.dashboard-body:not(.theme-dark) .level-badge.level-expert {
+  background: rgba(251, 113, 133, 0.18) !important;
+  border: 1px solid rgba(190, 24, 93, 0.25) !important;
+}
+
+.dashboard-body:not(.theme-dark) #careerResumePanel h2,
+.dashboard-body:not(.theme-dark) #careerResumePanel h3,
+.dashboard-body:not(.theme-dark) #atsScore,
+.dashboard-body:not(.theme-dark) #skillsList li,
+.dashboard-body:not(.theme-dark) #skillGapList li,
+.dashboard-body:not(.theme-dark) #keywordSuggestions li,
+.dashboard-body:not(.theme-dark) #resumeRecommendations li,
+.dashboard-body:not(.theme-dark) #resumeSuggestions,
+.dashboard-body:not(.theme-dark) #resumeUploadPreview,
+.dashboard-body:not(.theme-dark) .career-tab {
+  color: #1e293b !important;
+}
+
+.dashboard-body:not(.theme-dark) #resumeText::placeholder,
+.dashboard-body:not(.theme-dark) #jobDescriptionText::placeholder,
+.dashboard-body:not(.theme-dark) #tailorResumeText::placeholder {
+  color: #475569 !important;
+  opacity: 1 !important;
+}
+
+.dashboard-body:not(.theme-dark) .career-analyzer-grid textarea,
+.dashboard-body:not(.theme-dark) .career-tailor-grid textarea {
+  color: #0f172a !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+}
+
+.dashboard-body:not(.theme-dark) .notification-dropdown,
+.dashboard-body:not(.theme-dark) .notification-dropdown-header,
+.dashboard-body:not(.theme-dark) .notification-dropdown .notification-item-title,
+.dashboard-body:not(.theme-dark) .notification-dropdown .notification-item-time {
+  color: #1e293b !important;
+}
+
+.dashboard-body:not(.theme-dark) .notification-dropdown {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border: 1px solid rgba(148, 163, 184, 0.35) !important;
+}
+
+.dashboard-body:not(.theme-dark) .profile-notifications-panel .notification-item-title,
+.dashboard-body:not(.theme-dark) .profile-notifications-panel .notification-item-time {
+  color: #1e293b !important;
+}
+
+.dashboard-body:not(.theme-dark) #codeOutput,
+.dashboard-body:not(.theme-dark) #codeOutput:empty::before,
+.dashboard-body:not(.theme-dark) .code-output .output-placeholder {
+  color: #334155 !important;
+}
+
+.dashboard-body:not(.theme-dark) .vr-toggle-btn {
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(15, 23, 42, 0.45);
+  border: 1px solid rgba(15, 23, 42, 0.25) !important;
+}
+
+.dashboard-body:not(.theme-dark) .page-title,
+.dashboard-body:not(.theme-dark) .career-panel .stat-title {
+  color: #0f172a !important;
+}
+
+.dashboard-body:not(.theme-dark) .project-detail-list li,
+.dashboard-body:not(.theme-dark) .tailored-output {
+  color: #1e293b !important;
+}
+
+.dashboard-body:not(.theme-dark) .interview-track-card h3,
+.dashboard-body:not(.theme-dark) .interview-track-card p,
+.dashboard-body:not(.theme-dark) .tech-level-card .lock-hint {
+  color: #334155 !important;
+  opacity: 1 !important;
+}
