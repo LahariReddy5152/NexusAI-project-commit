@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken";
+import { randomUUID } from "crypto";
 import { getSessionByToken, getUserById } from "../db.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || "nexusai-dev-secret-change-in-production";
 
 export function signToken(userId, rememberMe = false) {
   const expiresIn = rememberMe ? "30d" : "1d";
-  return jwt.sign({ sub: userId }, JWT_SECRET, { expiresIn });
+  return jwt.sign({ sub: userId, jti: randomUUID() }, JWT_SECRET, { expiresIn });
 }
 
 export function verifyToken(token) {
