@@ -18,7 +18,7 @@
         const path = ctx.pathTitle || "Python Fundamentals";
 
         return `
-<p class="greeting-line"><strong>${getTimeGreeting()}, ${ctx.name || "Learner"}.</strong></p>
+<p class="greeting-line"><strong>${getTimeGreeting()}, ${ctx.name || "Lahari"}.</strong></p>
 <p>Today is <strong>${dayName}</strong>.</p>
 <p>Current Time: <strong>${timeStr}</strong></p>
 <p>Welcome back.</p>
@@ -29,7 +29,7 @@
     }
 
     function buildChatIntro(ctx) {
-        return `${getTimeGreeting()}, ${ctx.name || "Learner"}! You're on ${ctx.pathTitle || "your learning path"}. Next up: ${ctx.nextLesson || "start learning"}. Progress ${ctx.progress ?? 0}%. How can I help?`;
+        return `${getTimeGreeting()}, ${ctx.name || "Lahari"}! You're on ${ctx.pathTitle || "your learning path"}. Next up: ${ctx.nextLesson || "start learning"}. Progress ${ctx.progress ?? 0}%. How can I help?`;
     }
 
     function reply(message, ctx, mode) {

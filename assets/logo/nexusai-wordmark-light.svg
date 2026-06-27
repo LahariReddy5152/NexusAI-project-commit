@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 100" fill="none" role="img" aria-label="NexusAI">
+  <defs>
+    <linearGradient id="nexusTrace" x1="0" y1="80" x2="80" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#e11d48"/>
+      <stop offset="45%" stop-color="#9333ea"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <linearGradient id="nexusNode" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fb7185"/>
+      <stop offset="55%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
+    </linearGradient>
+    <linearGradient id="aiGradient" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#9333ea"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(8 10)">
+    <path d="M 22 78 V 26 C 22 22 24 20 28 22 C 46 34 54 66 72 78 C 76 80 78 78 78 74 V 22" stroke="url(#nexusTrace)" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="22" cy="22" r="4.8" fill="url(#nexusNode)" stroke="#831843" stroke-width="1"/>
+    <circle cx="22" cy="78" r="4.8" fill="url(#nexusNode)" stroke="#831843" stroke-width="1"/>
+    <circle cx="78" cy="22" r="4.8" fill="url(#nexusNode)" stroke="#831843" stroke-width="1"/>
+    <circle cx="78" cy="78" r="4.8" fill="url(#nexusNode)" stroke="#831843" stroke-width="1"/>
+    <circle cx="50" cy="50" r="3.2" fill="#a855f7" stroke="#831843" stroke-width="0.8"/>
+  </g>
+  <text x="108" y="62" font-family="Outfit, Segoe UI, Arial, sans-serif" font-size="44" font-weight="700" letter-spacing="2.5" fill="#4a0012">NEXUS</text>
+  <text x="278" y="62" font-family="Outfit, Segoe UI, Arial, sans-serif" font-size="44" font-weight="700" letter-spacing="2.5" fill="url(#aiGradient)">AI</text>
+</svg>

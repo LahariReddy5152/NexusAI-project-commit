@@ -9,7 +9,7 @@ export function getRecruiterContext() {
   const pathMeta = LEARNING_PATHS.find((p) => p.id === pathId);
   const next = getNextLessonInfo();
   return {
-    name: user.name || "Learner",
+    name: user.name || "Lahari",
     pathId,
     pathTitle: pathMeta?.title || "Python Fundamentals",
     pathProgress: getPathProgressPercent(pathId),

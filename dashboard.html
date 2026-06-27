@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="dashboard-body" onload="checkAuth()">
+<body class="dashboard-body light-mode" onload="checkAuth()">
 
 <div class="ui-glass-scrim"></div>
 
@@ -19,20 +19,20 @@
     <div class="sidebar" id="sidebar">
 
         <div class="sidebar-header">
-            <a class="nexusai-brand" href="#" onclick="showSection('dashboardSection'); return false;" aria-label="NexusAI home">
-                <img src="assets/logo/nexusai-wordmark.svg" alt="NexusAI" class="nexusai-logo nexusai-logo--sidebar" width="168" height="40">
+            <a class="nexusai-brand" href="#" onclick="navigateTo('dashboardSection'); return false;" aria-label="NexusAI home">
+                <img src="assets/logo/nexusai-wordmark-light.svg" alt="NexusAI" class="nexusai-logo nexusai-logo--sidebar" width="168" height="40">
             </a>
         </div>
 
-        <nav class="sidebar-nav">
-            <button class="nav-btn" onclick="showSection('dashboardSection')"><span class="icon">📊</span> Dashboard</button>
-            <button class="nav-btn" onclick="showSection('learnSection')"><span class="icon">📚</span> Learn</button>
-            <button class="nav-btn" onclick="showSection('realProjectsSection')"><span class="icon">💻</span> Real Projects</button>
-            <button class="nav-btn" onclick="showSection('interviewSection')"><span class="icon">🎤</span> Interview Prep</button>
-            <button class="nav-btn" onclick="showSection('jobModeSection')"><span class="icon">💼</span> Career</button>
-            <button class="nav-btn" onclick="showSection('codingLabSection')"><span class="icon">🧪</span> Code Lab</button>
-            <button class="nav-btn" onclick="showSection('profileSection')"><span class="icon">👤</span> Profile</button>
-            <button class="nav-btn" onclick="showSection('settingsSection')"><span class="icon">⚙️</span> Settings</button>
+        <nav class="sidebar-nav" role="navigation" aria-label="Main">
+            <button type="button" class="nav-btn active" data-section="dashboardSection"><span class="icon">📊</span> Dashboard</button>
+            <button type="button" class="nav-btn" data-section="learnSection"><span class="icon">📚</span> Learn</button>
+            <button type="button" class="nav-btn" data-section="realProjectsSection"><span class="icon">💻</span> Real Projects</button>
+            <button type="button" class="nav-btn" data-section="interviewSection"><span class="icon">🎤</span> Interview Prep</button>
+            <button type="button" class="nav-btn" data-section="jobModeSection"><span class="icon">💼</span> Career</button>
+            <button type="button" class="nav-btn" data-section="codingLabSection"><span class="icon">🧪</span> Code Lab</button>
+            <button type="button" class="nav-btn" data-section="profileSection"><span class="icon">👤</span> Profile</button>
+            <button type="button" class="nav-btn" data-section="settingsSection"><span class="icon">⚙️</span> Settings</button>
         </nav>
 
         <div class="sidebar-footer">
@@ -71,7 +71,7 @@
                 <div class="greeting-divider" aria-hidden="true"></div>
                 <div class="greeting-segment">
                     <span class="greeting-label">User</span>
-                    <span class="greeting-value" id="greetingName">Learner</span>
+                    <span class="greeting-value" id="greetingName">Lahari</span>
                 </div>
                 <div class="greeting-divider" aria-hidden="true"></div>
                 <div class="greeting-segment">
@@ -145,6 +145,10 @@
                 <div class="learn-header">
                     <h1 class="page-title">Learn</h1>
                     <p class="section-subtitle">Choose a technology to begin your learning path</p>
+                </div>
+                <div class="learn-toolbar">
+                    <input type="search" id="learnSearchInput" class="learn-search-input" placeholder="Search courses…" aria-label="Search courses">
+                    <div id="learnFilterChips" class="learn-filter-chips"></div>
                 </div>
                 <div class="course-catalog-grid" id="courseCatalogGrid"></div>
                 <div id="pathLockPreview" class="lock-preview-card glass-card hidden"></div>
@@ -279,7 +283,9 @@
 
         <div id="jobModeSection" class="section hidden">
             <h1 class="page-title">Career Hub</h1>
-            <p class="section-subtitle">Resume analysis and job-targeted tailoring</p>
+            <p class="section-subtitle">Resume analysis, job tracking, and skill gap insights</p>
+
+            <div id="careerHubCards" class="hub-cards-grid"></div>
 
             <div class="career-nav-tabs">
                 <button class="career-tab active" onclick="showCareerPanel('resume', event)">Resume Analyzer</button>
@@ -336,6 +342,8 @@
 
             <h1 class="page-title">Interview Prep</h1>
             <p class="section-subtitle">Mock interviews, technical depth, system design, and AI tracks — side-by-side practice workspace</p>
+
+            <div id="interviewHubCards" class="hub-cards-grid"></div>
 
             <div class="interview-nav-tabs">
                 <button class="category-tab active" onclick="showInterviewPanel('mock', event)">Mock Interview</button>
@@ -413,15 +421,24 @@
                 <button type="button" class="glass-btn" onclick="openCodeLabAssistant()">Open Coding Assistant</button>
             </div>
             <div class="card glass-card" style="margin-top:16px;">
-                <h3>Live Code Workspace</h3>
+                <h3 class="stat-title">Live Code Workspace</h3>
+                <div class="code-lab-toolbar">
+                    <label for="codeLabLanguage">Language</label>
+                    <select id="codeLabLanguage" aria-label="Programming language">
+                        <option value="python">Python</option>
+                        <option value="javascript">JavaScript</option>
+                        <option value="java">Java</option>
+                        <option value="sql">SQL</option>
+                    </select>
+                    <button type="button" class="glass-btn" onclick="runCode()">▶ Run Code</button>
+                </div>
                 <div class="code-lab-grid">
-                    <textarea id="codeEditor" class="code-editor" placeholder="Write code here..."></textarea>
+                    <textarea id="codeEditor" class="code-editor" placeholder="Write code here..." aria-label="Code editor"></textarea>
                     <div class="code-output">
                         <h4>Output</h4>
                         <pre id="codeOutput">Run code to see output</pre>
                     </div>
                 </div>
-                <button class="glass-btn" onclick="runCode()">Run Code</button>
             </div>
         </div>
 
@@ -526,13 +543,13 @@
                 <div class="profile-avatar-section glass-card" style="padding:20px;">
                     <div id="profileAvatarDisplay" class="profile-avatar-img" aria-label="Profile avatar">👤</div>
                     <div>
-                        <h3 class="stat-title" style="margin:0 0 4px;" id="profileDisplayName">—</h3>
-                        <p class="stat-meta" id="profileDisplayEmail">—</p>
+                        <h3 class="stat-title" style="margin:0 0 4px;" id="profileDisplayName">Lahari</h3>
+                        <p class="stat-meta" id="profileDisplayEmail">laharireddy5152@gmail.com</p>
                     </div>
                 </div>
                 <div class="profile-stats profile-stats-grid">
-                    <div class="stat-card glass-card"><h4>Name</h4><p id="profileName">—</p></div>
-                    <div class="stat-card glass-card"><h4>Email</h4><p id="profileEmail">—</p></div>
+                    <div class="stat-card glass-card"><h4>Name</h4><p id="profileName">Lahari</p></div>
+                    <div class="stat-card glass-card"><h4>Email</h4><p id="profileEmail">laharireddy5152@gmail.com</p></div>
                     <div class="stat-card glass-card"><h4>Current Level</h4><p id="profileLevel">Beginner</p></div>
                     <div class="stat-card glass-card"><h4>Day Streak</h4><p id="profileStreak">0 days</p></div>
                     <div class="stat-card glass-card"><h4>Hours Learned</h4><p id="profileHours">0 hours</p></div>
@@ -543,6 +560,15 @@
                     <button class="glass-btn" style="margin-top:12px;" onclick="markAllNotificationsRead()">Mark all read</button>
                 </div>
                 <div class="profile-section glass-card profile-achievements-compact">
+                    <h3>XP &amp; Level</h3>
+                    <p id="profileXpValue" class="stat-value" style="font-size:1.1rem;">0 XP</p>
+                    <div class="glass-progress profile-xp-bar"><div id="profileXpBarFill" class="progress-fill" style="width:0%"></div></div>
+                </div>
+                <div class="profile-section glass-card">
+                    <h3>Learning History</h3>
+                    <ul id="profileLearningHistory" class="learning-history-list"></ul>
+                </div>
+                <div class="profile-section glass-card profile-achievements-compact">
                     <h3>Achievements</h3>
                     <div class="achievements-row" id="profileAchievementsCompact"></div>
                 </div>
@@ -551,26 +577,33 @@
 
         <div id="settingsSection" class="section hidden">
             <h1 class="page-title">Settings</h1>
-            <div class="card glass-card">
-                <h3>Appearance</h3>
-                <div class="btn-row">
-                    <button class="glass-btn" onclick="setTheme('dark')">Dark Mode</button>
-                    <button class="glass-btn" onclick="setTheme('light')">Light Mode</button>
+            <div class="settings-grid">
+                <div class="card glass-card">
+                    <h3 class="stat-title">Appearance</h3>
+                    <div class="settings-option-row">
+                        <button type="button" class="glass-btn active" data-theme-btn="light" onclick="setTheme('light')">Light Mode</button>
+                        <button type="button" class="glass-btn" data-theme-btn="dark" onclick="setTheme('dark')">Dark Mode</button>
+                    </div>
+                    <p class="stat-meta" style="margin-top:16px;">Accent Color</p>
+                    <div class="settings-option-row">
+                        <button type="button" class="accent-swatch active" data-accent="rose" onclick="setAccent('rose')" aria-label="Rose accent"></button>
+                        <button type="button" class="accent-swatch" data-accent="lavender" onclick="setAccent('lavender')" aria-label="Lavender accent"></button>
+                        <button type="button" class="accent-swatch" data-accent="sky" onclick="setAccent('sky')" aria-label="Sky accent"></button>
+                        <button type="button" class="accent-swatch" data-accent="pink" onclick="setAccent('pink')" aria-label="Pink accent"></button>
+                    </div>
                 </div>
-            </div>
-            <div class="card glass-card" style="margin-top:16px;">
-                <h3>Preferences</h3>
-                <p class="muted-text">Theme, notifications, and learning preferences.</p>
-                <button class="glass-btn" onclick="showSection('learnSection')">Browse Courses</button>
-            </div>
-            <div class="card glass-card" style="margin-top:16px;">
-                <h3>Update Profile</h3>
-                <input type="text" id="editProfileName" placeholder="Update Name">
-                <input type="email" id="editProfileEmail" placeholder="Update Email">
-                <button class="glass-btn" onclick="saveProfile()">Save Changes</button>
-            </div>
-            <div class="card glass-card" style="margin-top:16px;">
-                <button class="glass-btn" onclick="showSection('dashboardSection')">Back to Dashboard</button>
+                <div class="card glass-card">
+                    <h3 class="stat-title">Notifications</h3>
+                    <label class="settings-toggle"><input type="checkbox" id="notifyEmail" checked> Email notifications</label>
+                    <label class="settings-toggle"><input type="checkbox" id="notifyDesktop" checked> Desktop notifications</label>
+                    <label class="settings-toggle"><input type="checkbox" id="notifyLearning" checked> Learning reminders</label>
+                </div>
+                <div class="card glass-card">
+                    <h3 class="stat-title">Account Settings</h3>
+                    <input type="text" id="editProfileName" placeholder="Update Name" aria-label="Name">
+                    <input type="email" id="editProfileEmail" placeholder="Update Email" aria-label="Email" style="margin-top:10px;">
+                    <button type="button" class="glass-btn" style="margin-top:12px;" onclick="saveAccountSettings()">Save Account</button>
+                </div>
             </div>
         </div>
 

@@ -1,0 +1,904 @@
+/**
+ * Phase UI — Light modern theme, sidebar, navigation, animations, accessibility
+ */
+
+:root {
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #475569;
+  --card-bg: rgba(255, 255, 255, 0.78);
+  --sidebar-bg: rgba(255, 255, 255, 0.82);
+  --border-color: rgba(244, 114, 182, 0.22);
+  --rose: #e11d48;
+  --lavender: #a855f7;
+  --sky: #38bdf8;
+  --pink-soft: #fce7f3;
+  --accent-primary: #be185d;
+  --accent-gradient: linear-gradient(135deg, #fb7185, #c084fc, #38bdf8);
+  --shadow-soft: 0 8px 32px rgba(148, 163, 184, 0.18);
+  --shadow-hover: 0 16px 40px rgba(168, 85, 247, 0.16);
+}
+
+.dashboard-body .nexusai-logo--sidebar {
+  max-width: 168px;
+  margin-bottom: 16px;
+}
+
+.dashboard-body {
+  color: var(--text-primary);
+}
+
+.dashboard-body .ui-glass-scrim {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(252, 231, 243, 0.25) 40%,
+    rgba(224, 242, 254, 0.2) 100%
+  ) !important;
+  animation: nexusBgFloat 18s ease-in-out infinite alternate;
+}
+
+@keyframes nexusBgFloat {
+  0% { opacity: 0.85; }
+  100% { opacity: 1; }
+}
+
+/* Sidebar — light rose/lavender */
+.dashboard-body .sidebar {
+  background: rgba(255, 252, 254, 0.88) !important;
+  border-right: 1px solid rgba(244, 114, 182, 0.2) !important;
+  box-shadow: 4px 0 24px rgba(148, 163, 184, 0.08);
+}
+
+.dashboard-body .nav-btn {
+  color: #475569 !important;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dashboard-body .nav-btn:hover {
+  background: linear-gradient(135deg, rgba(251, 113, 133, 0.14), rgba(192, 132, 252, 0.12)) !important;
+  color: #9d174d !important;
+  transform: translateX(5px);
+  border-left: 3px solid #f472b6;
+  box-shadow: 0 4px 16px rgba(244, 114, 182, 0.12);
+}
+
+.dashboard-body .nav-btn.active,
+.dashboard-body .nav-btn[aria-current="page"] {
+  background: linear-gradient(135deg, rgba(251, 113, 133, 0.22), rgba(192, 132, 252, 0.18), rgba(56, 189, 248, 0.12)) !important;
+  color: #831843 !important;
+  font-weight: 600;
+  border-left: 3px solid #c084fc;
+  box-shadow: inset 0 0 0 1px rgba(244, 114, 182, 0.15);
+}
+
+.dashboard-body .logout-btn {
+  color: #be123c !important;
+  background: rgba(251, 113, 133, 0.08) !important;
+}
+
+.dashboard-body .logout-btn:hover {
+  background: rgba(251, 113, 133, 0.16) !important;
+}
+
+/* Cards — readable light glass */
+.dashboard-body .glass-card,
+.dashboard-body .card,
+.dashboard-body .stat-card,
+.dashboard-body .project-card-v2,
+.dashboard-body .course-catalog-card,
+.dashboard-body .tech-level-card,
+.dashboard-body .interview-panel-col,
+.dashboard-body .hub-card {
+  background: rgba(255, 255, 255, 0.82) !important;
+  border: 1px solid rgba(244, 114, 182, 0.18) !important;
+  color: var(--text-primary) !important;
+  box-shadow: var(--shadow-soft) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.dashboard-body .glass-card:hover,
+.dashboard-body .course-catalog-card:hover,
+.dashboard-body .project-card-v2:hover,
+.dashboard-body .hub-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover) !important;
+  border-color: rgba(192, 132, 252, 0.35) !important;
+}
+
+.dashboard-body .stat-title,
+.dashboard-body .page-title,
+.dashboard-body h1,
+.dashboard-body h2,
+.dashboard-body h3,
+.dashboard-body h4 {
+  color: #1e293b !important;
+}
+
+.dashboard-body .stat-value {
+  color: #831843 !important;
+}
+
+.dashboard-body .stat-meta,
+.dashboard-body .section-subtitle,
+.dashboard-body .muted-text {
+  color: #64748b !important;
+}
+
+.dashboard-body .greeting-card-horizontal .greeting-label {
+  color: #be185d !important;
+}
+
+.dashboard-body .greeting-card-horizontal .greeting-value {
+  color: #1e293b !important;
+}
+
+.dashboard-body .topbar h2 {
+  color: #334155 !important;
+}
+
+/* Buttons */
+.dashboard-body .glass-btn,
+.dashboard-body button.glass-btn {
+  background: linear-gradient(135deg, #fb7185, #c084fc, #38bdf8) !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-body .glass-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(168, 85, 247, 0.28);
+}
+
+.dashboard-body .glass-btn:focus-visible,
+.dashboard-body .nav-btn:focus-visible {
+  outline: 2px solid #c084fc;
+  outline-offset: 2px;
+}
+
+/* Progress bars */
+.dashboard-body .glass-progress,
+.dashboard-body .progress-bar {
+  background: rgba(226, 232, 240, 0.8) !important;
+  border-radius: 999px;
+  overflow: hidden;
+  height: 8px;
+}
+
+.dashboard-body .progress-fill {
+  background: var(--accent-gradient) !important;
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+/* Page transitions */
+.dashboard-body .section {
+  animation: nexusPageIn 0.35s ease;
+}
+
+@keyframes nexusPageIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Learn toolbar */
+.learn-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.learn-search-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(244, 114, 182, 0.25);
+  background: rgba(255, 255, 255, 0.9);
+  color: #1e293b;
+  font-size: 0.95rem;
+}
+
+.learn-search-input:focus {
+  outline: none;
+  border-color: #c084fc;
+  box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.2);
+}
+
+.learn-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.learn-filter-chip {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(244, 114, 182, 0.25);
+  background: rgba(255, 255, 255, 0.75);
+  color: #64748b;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.learn-filter-chip:hover,
+.learn-filter-chip.active {
+  background: linear-gradient(135deg, rgba(251, 113, 133, 0.15), rgba(192, 132, 252, 0.12));
+  color: #831843;
+  border-color: rgba(192, 132, 252, 0.4);
+}
+
+.course-catalog-card .catalog-progress-bar {
+  margin: 10px 0;
+}
+
+.course-continue-btn {
+  margin-top: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+}
+
+/* Hub cards (Career, Interview) */
+.hub-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.hub-card {
+  padding: 20px;
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.hub-card-icon {
+  font-size: 1.75rem;
+  margin-bottom: 8px;
+}
+
+.hub-card h3 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.hub-card p {
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
+.hub-card .hub-stat {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #be185d;
+}
+
+/* Project status badges */
+.status-planned { background: rgba(148, 163, 184, 0.2); color: #475569; }
+.status-progress { background: rgba(56, 189, 248, 0.15); color: #0369a1; }
+.status-complete { background: rgba(52, 211, 153, 0.15); color: #047857; }
+
+.project-est-date {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin-top: 6px;
+}
+
+/* Code lab */
+.code-lab-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.code-lab-toolbar select {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(244, 114, 182, 0.25);
+  background: #fff;
+  color: #1e293b;
+}
+
+.code-editor {
+  background: #1e293b !important;
+  color: #f1f5f9 !important;
+  border: 1px solid rgba(15, 23, 42, 0.45) !important;
+  font-family: "Cascadia Code", "Consolas", monospace;
+  min-height: 280px;
+}
+
+.code-output pre {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  padding: 16px;
+  border-radius: 12px;
+  min-height: 120px;
+}
+
+/* Settings */
+.settings-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.settings-option-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.accent-swatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.accent-swatch:hover,
+.accent-swatch.active {
+  transform: scale(1.1);
+  border-color: #1e293b;
+}
+
+.accent-swatch[data-accent="rose"] { background: linear-gradient(135deg, #fb7185, #e11d48); }
+.accent-swatch[data-accent="lavender"] { background: linear-gradient(135deg, #c084fc, #9333ea); }
+.accent-swatch[data-accent="sky"] { background: linear-gradient(135deg, #38bdf8, #0284c7); }
+.accent-swatch[data-accent="pink"] { background: linear-gradient(135deg, #f9a8d4, #ec4899); }
+
+.settings-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+  color: #334155;
+}
+
+/* Profile */
+.profile-xp-bar {
+  margin-top: 12px;
+}
+
+.profile-xp-bar .progress-fill {
+  height: 10px;
+}
+
+.learning-history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.learning-history-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+/* Dark mode override (settings) */
+body.dashboard-body.theme-dark {
+  --text-primary: #fdf2f8;
+  --text-secondary: #e9c0c8;
+  --card-bg: rgba(36, 6, 14, 0.58);
+  --sidebar-bg: rgba(58, 8, 18, 0.9);
+}
+
+body.dashboard-body.theme-dark .ui-glass-scrim {
+  background: rgba(20, 4, 10, 0.18) !important;
+}
+
+body.dashboard-body.theme-dark .glass-card {
+  background: rgba(36, 6, 14, 0.58) !important;
+  color: #fdf2f8 !important;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .dashboard-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px;
+  }
+
+  .stat-card {
+    min-width: 0;
+  }
+
+  .hub-cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .main-content {
+    overflow-x: hidden;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -240px;
+    top: 0;
+    height: 100vh;
+    z-index: 100;
+    transition: left 0.3s ease;
+  }
+
+  .sidebar.active {
+    left: 0;
+  }
+
+  .menu-btn {
+    display: block !important;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(244, 114, 182, 0.2);
+    border-radius: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+
+  .main-content {
+    padding: 16px;
+  }
+
+  .greeting-card-horizontal {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .learn-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px;
+  }
+
+  .stat-card .stat-value {
+    font-size: 1.25rem;
+  }
+
+  .page-title {
+    font-size: 1.35rem;
+  }
+
+  .hub-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .glass-card {
+    overflow: hidden;
+    word-wrap: break-word;
+  }
+}
+
+/* Override cosmic crimson dark card rules on dashboard */
+.dashboard-body:not(.theme-dark) .card,
+.dashboard-body:not(.theme-dark) .project-card,
+.dashboard-body:not(.theme-dark) .module-card,
+.dashboard-body:not(.theme-dark) .stat-card {
+  background: rgba(255, 255, 255, 0.82) !important;
+  border-color: rgba(244, 114, 182, 0.18) !important;
+}
+
+.dashboard-body:not(.theme-dark) button:not(.nav-btn):not(.close-btn):not(.menu-btn):not(.forgot-link):not(.learn-filter-chip):not(.accent-swatch) {
+  background: linear-gradient(135deg, #fb7185, #c084fc, #38bdf8) !important;
+  color: #fff !important;
+}
+
+.dashboard-body input,
+.dashboard-body textarea,
+.dashboard-body select {
+  background: rgba(255, 255, 255, 0.92);
+  color: #1e293b;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.dashboard-body input::placeholder,
+.dashboard-body textarea::placeholder {
+  color: #475569;
+  opacity: 1;
+}
+
+/* ============================================================
+   Light mode accessibility — high contrast overrides
+   (Virtual Recruiter popup stays dark-themed)
+   ============================================================ */
+
+.dashboard-body:not(.theme-dark) {
+  color: var(--text-primary);
+}
+
+.dashboard-body:not(.theme-dark) .muted-text,
+.dashboard-body:not(.theme-dark) .stat-meta,
+.dashboard-body:not(.theme-dark) .section-subtitle {
+  color: #334155 !important;
+  opacity: 1 !important;
+}
+
+/* Dashboard metrics */
+.dashboard-body:not(.theme-dark) .stat-title {
+  color: #0f172a !important;
+  font-weight: 600;
+}
+
+.dashboard-body:not(.theme-dark) .stat-value {
+  color: #9d174d !important;
+  font-weight: 700;
+}
+
+.dashboard-body:not(.theme-dark) .stat-card p,
+.dashboard-body:not(.theme-dark) .stat-card h4 {
+  color: #0f172a !important;
+}
+
+/* Learn — categories & search */
+.dashboard-body:not(.theme-dark) .learn-search-input::placeholder {
+  color: #475569 !important;
+}
+
+.dashboard-body:not(.theme-dark) .learn-filter-chip {
+  background: linear-gradient(135deg, #334155, #1e293b) !important;
+  color: #f8fafc !important;
+  border-color: rgba(15, 23, 42, 0.25) !important;
+  font-weight: 600;
+  opacity: 1 !important;
+}
+
+.dashboard-body:not(.theme-dark) .learn-filter-chip:hover,
+.dashboard-body:not(.theme-dark) .learn-filter-chip.active {
+  background: linear-gradient(135deg, #9d174d, #7c3aed, #0284c7) !important;
+  color: #fff !important;
+  border-color: rgba(157, 23, 77, 0.35) !important;
+}
+
+.dashboard-body:not(.theme-dark) .course-catalog-card h3,
+.dashboard-body:not(.theme-dark) .tech-card h3,
+.dashboard-body:not(.theme-dark) .tech-level-card h3 {
+  color: #0f172a !important;
+}
+
+.dashboard-body:not(.theme-dark) .course-catalog-card p,
+.dashboard-body:not(.theme-dark) .tech-level-card p {
+  color: #334155 !important;
+}
+
+/* Python / learn workspace */
+.dashboard-body:not(.theme-dark) .learn-breadcrumb {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(148, 163, 184, 0.35) !important;
+  color: #334155 !important;
+}
+
+.dashboard-body:not(.theme-dark) .breadcrumb-link {
+  color: #9d174d !important;
+}
+
+.dashboard-body:not(.theme-dark) .breadcrumb-sep {
+  color: #64748b !important;
+  opacity: 1 !important;
+}
+
+.dashboard-body:not(.theme-dark) .breadcrumb-current {
+  color: #0f172a !important;
+}
+
+.dashboard-body:not(.theme-dark) .workspace-lesson-item {
+  color: #334155 !important;
+  opacity: 1 !important;
+}
+
+.dashboard-body:not(.theme-dark) .workspace-lesson-item:hover {
+  background: rgba(251, 113, 133, 0.12) !important;
+  color: #0f172a !important;
+}
+
+.dashboard-body:not(.theme-dark) .workspace-lesson-item.active {
+  background: linear-gradient(135deg, rgba(192, 132, 252, 0.35), rgba(56, 189, 248, 0.2)) !important;
+  border-color: rgba(124, 58, 237, 0.35) !important;
+  color: #0f172a !important;
+  font-weight: 700;
+}
+
+.dashboard-body:not(.theme-dark) .lesson-content-title {
+  color: #0f172a !important;
+}
+
+.dashboard-body:not(.theme-dark) .lesson-content-desc,
+.dashboard-body:not(.theme-dark) .lesson-meta-inline,
+.dashboard-body:not(.theme-dark) .lesson-meta-badge,
+.dashboard-body:not(.theme-dark) .difficulty-badge {
+  color: #334155 !important;
+  opacity: 1 !important;
+}
+
+.dashboard-body:not(.theme-dark) .lesson-section-block {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(148, 163, 184, 0.3) !important;
+}
+
+.dashboard-body:not(.theme-dark) .lesson-section-block .section-heading {
+  color: #9d174d !important;
+}
+
+.dashboard-body:not(.theme-dark) .lesson-section-block .section-body,
+.dashboard-body:not(.theme-dark) .lesson-section-block p,
+.dashboard-body:not(.theme-dark) .lesson-section-block li {
+  color: #1e293b !important;
+}
+
+.dashboard-body:not(.theme-dark) .lesson-section-block pre,
+.dashboard-body:not(.theme-dark) .lesson-section-block code {
+  color: #0f172a !important;
+  background: #f1f5f9 !important;
+}
+
+.dashboard-body:not(.theme-dark) .learn-right-panel,
+.dashboard-body:not(.theme-dark) .right-panel-nav-labels,
+.dashboard-body:not(.theme-dark) .right-panel-nav-labels span {
+  color: #334155 !important;
+}
+
+.dashboard-body:not(.theme-dark) .level-badge {
+  color: #7c2d12 !important;
+  background: rgba(251, 113, 133, 0.15) !important;
+  border-color: rgba(190, 24, 93, 0.25) !important;
+}
+
+.dashboard-body:not(.theme-dark) .level-badge.level-beginner { color: #9d174d !important; }
+.dashboard-body:not(.theme-dark) .level-badge.level-intermediate { color: #7c2d12 !important; }
+.dashboard-body:not(.theme-dark) .level-badge.level-advanced { color: #5b21b6 !important; }
+.dashboard-body:not(.theme-dark) .level-badge.level-expert { color: #be123c !important; }
+
+/* Real projects */
+.dashboard-body:not(.theme-dark) .project-card-name {
+  color: #0f172a !important;
+}
+
+.dashboard-body:not(.theme-dark) .project-stack,
+.dashboard-body:not(.theme-dark) .project-est-date,
+.dashboard-body:not(.theme-dark) .project-card-v2 p {
+  color: #334155 !important;
+  opacity: 1 !important;
+}
+
+.dashboard-body:not(.theme-dark) .project-pct {
+  color: #9d174d !important;
+}
+
+.dashboard-body:not(.theme-dark) .project-status-badge,
+.dashboard-body:not(.theme-dark) .status-planned {
+  background: rgba(148, 163, 184, 0.25) !important;
+  color: #1e293b !important;
+  font-weight: 600;
+}
+
+.dashboard-body:not(.theme-dark) .difficulty,
+.dashboard-body:not(.theme-dark) .project-difficulty {
+  color: #9d174d !important;
+  font-weight: 700;
+}
+
+.dashboard-body:not(.theme-dark) .project-detail-body p,
+.dashboard-body:not(.theme-dark) .project-detail-body li,
+.dashboard-body:not(.theme-dark) .checkpoint-item {
+  color: #1e293b !important;
+}
+
+.dashboard-body:not(.theme-dark) .project-detail-body pre,
+.dashboard-body:not(.theme-dark) .project-detail-body .diagram-block {
+  background: #1e293b !important;
+  color: #f1f5f9 !important;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+/* Interview prep */
+.dashboard-body:not(.theme-dark) .interview-topic-btn,
+.dashboard-body:not(.theme-dark) .interview-q-btn {
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #1e293b !important;
+  border-color: rgba(148, 163, 184, 0.35) !important;
+}
+
+.dashboard-body:not(.theme-dark) .interview-topic-btn.active,
+.dashboard-body:not(.theme-dark) .interview-q-item.active .interview-q-btn {
+  background: linear-gradient(135deg, rgba(251, 113, 133, 0.2), rgba(192, 132, 252, 0.18)) !important;
+  color: #0f172a !important;
+  border-color: rgba(157, 23, 77, 0.35) !important;
+}
+
+.dashboard-body:not(.theme-dark) .interview-panel-col h3,
+.dashboard-body:not(.theme-dark) .interview-panel-col h4,
+.dashboard-body:not(.theme-dark) .hub-card h3 {
+  color: #0f172a !important;
+}
+
+.dashboard-body:not(.theme-dark) .hub-card p,
+.dashboard-body:not(.theme-dark) .interview-panel-col p {
+  color: #334155 !important;
+}
+
+.dashboard-body:not(.theme-dark) .mock-question-box,
+.dashboard-body:not(.theme-dark) .mock-response-box {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(148, 163, 184, 0.35) !important;
+  color: #1e293b !important;
+}
+
+.dashboard-body:not(.theme-dark) .mock-question-box h4,
+.dashboard-body:not(.theme-dark) .mock-response-box h4 {
+  color: #9d174d !important;
+}
+
+/* Career / resume */
+.dashboard-body:not(.theme-dark) .resume-panel h3,
+.dashboard-body:not(.theme-dark) .resume-panel h4,
+.dashboard-body:not(.theme-dark) .career-analysis h4 {
+  color: #0f172a !important;
+}
+
+.dashboard-body:not(.theme-dark) .resume-panel p,
+.dashboard-body:not(.theme-dark) .career-analysis p,
+.dashboard-body:not(.theme-dark) .career-analysis li,
+.dashboard-body:not(.theme-dark) .ats-score-label,
+.dashboard-body:not(.theme-dark) .skill-tag,
+.dashboard-body:not(.theme-dark) .keyword-tag {
+  color: #1e293b !important;
+}
+
+.dashboard-body:not(.theme-dark) #resumeInput::placeholder,
+.dashboard-body:not(.theme-dark) .resume-textarea::placeholder {
+  color: #475569 !important;
+}
+
+.dashboard-body:not(.theme-dark) .diagram-block {
+  background: #1e293b !important;
+  color: #f8fafc !important;
+}
+
+/* Code lab — dark editor, readable chrome */
+.dashboard-body:not(.theme-dark) .code-lab-toolbar label {
+  color: #0f172a !important;
+  font-weight: 600;
+}
+
+.dashboard-body:not(.theme-dark) .code-lab-toolbar select,
+.dashboard-body:not(.theme-dark) #codeLanguage {
+  background: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: rgba(15, 23, 42, 0.35) !important;
+  font-weight: 600;
+}
+
+.dashboard-body:not(.theme-dark) .code-editor,
+.dashboard-body:not(.theme-dark) #codeEditor {
+  background: #1e293b !important;
+  color: #f1f5f9 !important;
+  border: 1px solid rgba(15, 23, 42, 0.45) !important;
+}
+
+.dashboard-body:not(.theme-dark) .code-editor::placeholder,
+.dashboard-body:not(.theme-dark) #codeEditor::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+.dashboard-body:not(.theme-dark) .code-output,
+.dashboard-body:not(.theme-dark) .code-output label,
+.dashboard-body:not(.theme-dark) .code-output h4 {
+  color: #0f172a !important;
+  font-weight: 600;
+}
+
+.dashboard-body:not(.theme-dark) .code-output pre {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(148, 163, 184, 0.4) !important;
+}
+
+/* Profile */
+.dashboard-body:not(.theme-dark) .profile-stats-grid .stat-card h4 {
+  color: #64748b !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.dashboard-body:not(.theme-dark) .profile-stats-grid .stat-card p {
+  color: #0f172a !important;
+  font-weight: 700;
+}
+
+.dashboard-body:not(.theme-dark) .notification-item-title {
+  color: #0f172a !important;
+}
+
+.dashboard-body:not(.theme-dark) .notification-item-time {
+  color: #475569 !important;
+  opacity: 1 !important;
+}
+
+.dashboard-body:not(.theme-dark) .profile-notifications-panel .notification-item {
+  border-bottom-color: rgba(148, 163, 184, 0.25);
+}
+
+.dashboard-body:not(.theme-dark) .profile-notifications-panel .notification-item:hover {
+  background: rgba(251, 113, 133, 0.08) !important;
+}
+
+.dashboard-body:not(.theme-dark) #profileDisplayName {
+  color: #0f172a !important;
+}
+
+.dashboard-body:not(.theme-dark) #profileDisplayEmail {
+  color: #334155 !important;
+}
+
+/* Settings */
+.dashboard-body:not(.theme-dark) .settings-toggle {
+  color: #1e293b !important;
+  font-weight: 500;
+}
+
+.dashboard-body:not(.theme-dark) [data-theme-btn].active {
+  box-shadow: 0 0 0 2px #0f172a;
+}
+
+/* Virtual Recruiter floating button (light shell, dark readable label) */
+.dashboard-body:not(.theme-dark) .vr-toggle-btn {
+  background: linear-gradient(135deg, #fb7185, #c084fc, #38bdf8) !important;
+  color: #0f172a !important;
+  font-weight: 700;
+  border: 1px solid rgba(15, 23, 42, 0.15) !important;
+  text-shadow: none;
+  box-shadow: 0 8px 24px rgba(148, 163, 184, 0.35);
+}
+
+/* VR popup — keep dark theme only */
+.dashboard-body:not(.theme-dark) #chatbotBox.global-vr-panel {
+  background: rgba(20, 4, 10, 0.96) !important;
+  color: #fdf2f8 !important;
+  border: 1px solid rgba(199, 123, 127, 0.35);
+}
+
+.dashboard-body:not(.theme-dark) #chatbotBox.global-vr-panel .chatbot-header h4,
+.dashboard-body:not(.theme-dark) #chatbotBox.global-vr-panel .chat-messages,
+.dashboard-body:not(.theme-dark) #chatbotBox.global-vr-panel .vr-hints,
+.dashboard-body:not(.theme-dark) #chatbotBox.global-vr-panel .recruiter-greeting {
+  color: #fdf2f8 !important;
+}
+
+.dashboard-body:not(.theme-dark) #chatbotBox.global-vr-panel input,
+.dashboard-body:not(.theme-dark) #chatbotBox.global-vr-panel select,
+.dashboard-body:not(.theme-dark) #chatbotBox.global-vr-panel textarea {
+  background: rgba(36, 6, 14, 0.75) !important;
+  color: #fdf2f8 !important;
+  border-color: rgba(199, 123, 127, 0.35) !important;
+}

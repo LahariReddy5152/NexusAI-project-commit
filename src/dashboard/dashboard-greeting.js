@@ -5,7 +5,7 @@ let greetingClockTimer = null;
 
 export function renderDashboardGreeting() {
     const user = JSON.parse(localStorage.getItem("nexusUser") || "{}");
-    const name = user.name || "Learner";
+    const name = user.name || "Lahari";
     const now = new Date();
 
     updateEl("greetingPeriod", getTimeGreeting());
