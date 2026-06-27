@@ -173,6 +173,15 @@ async function main() {
 
   await browser.close();
   server.close();
+
+  // Prefer attached WhatsApp captures for pages present in assets folder
+  try {
+    const { execSync } = await import("node:child_process");
+    execSync("node scripts/copy-attached-screenshots.mjs", { stdio: "inherit", cwd: process.cwd() });
+  } catch {
+    console.warn("Attached screenshot copy skipped.");
+  }
+
   console.log("Screenshot generation complete.");
 }
 
