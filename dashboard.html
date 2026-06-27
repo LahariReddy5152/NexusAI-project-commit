@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NexusAI Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="assets/logo/favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/logo/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="assets/logo/png/nexusai-app-icon-256.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-body" onload="checkAuth()">
+
+<div class="ui-glass-scrim"></div>
+
+<div class="dashboard-container app-shell">
+
+    <div class="sidebar" id="sidebar">
+
+        <div class="sidebar-header">
+            <a class="nexusai-brand" href="#" onclick="showSection('dashboardSection'); return false;" aria-label="NexusAI home">
+                <img src="assets/logo/nexusai-wordmark.svg" alt="NexusAI" class="nexusai-logo nexusai-logo--sidebar" width="168" height="40">
+            </a>
+        </div>
+
+        <nav class="sidebar-nav">
+            <button class="nav-btn" onclick="showSection('dashboardSection')"><span class="icon">📊</span> Dashboard</button>
+            <button class="nav-btn" onclick="showSection('learnSection')"><span class="icon">📚</span> Learn</button>
+            <button class="nav-btn" onclick="showSection('realProjectsSection')"><span class="icon">💻</span> Real Projects</button>
+            <button class="nav-btn" onclick="showSection('interviewSection')"><span class="icon">🎤</span> Interview Prep</button>
+            <button class="nav-btn" onclick="showSection('jobModeSection')"><span class="icon">💼</span> Career</button>
+            <button class="nav-btn" onclick="showSection('codingLabSection')"><span class="icon">🧪</span> Code Lab</button>
+            <button class="nav-btn" onclick="showSection('profileSection')"><span class="icon">👤</span> Profile</button>
+            <button class="nav-btn" onclick="showSection('settingsSection')"><span class="icon">⚙️</span> Settings</button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="nav-btn admin-only hidden" onclick="showSection('adminSection')"><span class="icon">⚙️</span> Admin</button>
+            <button class="logout-btn" onclick="logout()"><span class="icon">🚪</span> Logout</button>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+
+        <div class="topbar">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <h2 id="welcomeText">Welcome Back</h2>
+            <div class="topbar-actions">
+                <div class="notification-wrap">
+                    <button type="button" class="notification-bell" onclick="toggleNotificationDropdown()" title="Notifications" aria-label="Notifications">
+                        🔔
+                        <span id="notificationBadge" class="notification-badge" style="display:none">0</span>
+                    </button>
+                    <div id="notificationDropdown" class="notification-dropdown">
+                        <div class="notification-dropdown-header">Notifications</div>
+                        <div id="notificationDropdownList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboardSection" class="section">
+
+            <div class="glass-card greeting-card greeting-card-horizontal" id="dashboardGreeting">
+                <div class="greeting-segment">
+                    <span class="greeting-label">Greeting</span>
+                    <span class="greeting-value" id="greetingPeriod">Good Evening</span>
+                </div>
+                <div class="greeting-divider" aria-hidden="true"></div>
+                <div class="greeting-segment">
+                    <span class="greeting-label">User</span>
+                    <span class="greeting-value" id="greetingName">Learner</span>
+                </div>
+                <div class="greeting-divider" aria-hidden="true"></div>
+                <div class="greeting-segment">
+                    <span class="greeting-label">Date</span>
+                    <span class="greeting-value" id="greetingDate">June 25, 2026</span>
+                </div>
+                <div class="greeting-divider" aria-hidden="true"></div>
+                <div class="greeting-segment">
+                    <span class="greeting-label">Time</span>
+                    <span class="greeting-value" id="greetingClock">7:45 PM</span>
+                </div>
+            </div>
+
+            <div class="card-box dashboard-stats">
+                <div class="card glass-card stat-card">
+                    <h3 class="stat-title">Learning Progress</h3>
+                    <p id="overallProgressPct" class="stat-value">0%</p>
+                    <p class="stat-meta">Complete</p>
+                </div>
+                <div class="card glass-card stat-card">
+                    <h3 class="stat-title">Day Streak</h3>
+                    <p id="streak" class="stat-value">0</p>
+                    <p class="stat-meta">Days</p>
+                </div>
+                <div class="card glass-card stat-card">
+                    <h3 class="stat-title">Hours Learned</h3>
+                    <p id="hoursLearned" class="stat-value">0</p>
+                    <p class="stat-meta">Study time</p>
+                </div>
+                <div class="card glass-card stat-card">
+                    <h3 class="stat-title">Total XP</h3>
+                    <p id="points" class="stat-value">0</p>
+                    <p class="stat-meta">Experience</p>
+                </div>
+            </div>
+
+            <div class="card glass-card" style="margin-bottom:20px;">
+                <h3 class="stat-title" style="margin-bottom:12px;">Current Learning Path</h3>
+                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+                    <div>
+                        <p id="activePathLabel" class="stat-value" style="font-size:1.35rem;margin:0;">Python</p>
+                        <p class="stat-meta" id="pathProgressLabel">0% of path complete</p>
+                    </div>
+                    <button class="glass-btn" onclick="showSection('learnSection')">View Path →</button>
+                </div>
+            </div>
+
+            <h3 class="stat-title" style="margin-bottom:12px;">Your Courses</h3>
+            <div class="dashboard-course-row" id="dashboardCourseCards"></div>
+
+            <div class="dashboard-action-row">
+                <div class="card glass-card continue-learning-card">
+                    <h3 class="stat-title">Continue Learning</h3>
+                    <p class="continue-path-label" id="continuePathLabel">Python</p>
+                    <p class="continue-lesson-title" id="continueLearningLabel">Start your first lesson</p>
+                    <button class="btn-primary glass-btn" onclick="continueLearning()">Continue →</button>
+                </div>
+                <div class="card glass-card recommendations-card">
+                    <h3 class="stat-title">Recommendations</h3>
+                    <div id="learningRecommendations" class="rec-grid"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="learnSection" class="section hidden">
+
+            <nav id="learnBreadcrumb" class="learn-breadcrumb hidden" aria-label="Learn navigation"></nav>
+
+            <div id="learnCatalogView">
+                <div class="learn-header">
+                    <h1 class="page-title">Learn</h1>
+                    <p class="section-subtitle">Choose a technology to begin your learning path</p>
+                </div>
+                <div class="course-catalog-grid" id="courseCatalogGrid"></div>
+                <div id="pathLockPreview" class="lock-preview-card glass-card hidden"></div>
+            </div>
+
+            <div id="learnLevelView" class="hidden">
+                <button class="back-btn" onclick="backToCourseCatalog()">← All Technologies</button>
+                <div class="tech-level-picker-header">
+                    <span id="techLevelLogo" class="tech-logo tech-logo-lg"></span>
+                    <div>
+                        <h1 class="page-title" id="techLevelTitle">Python</h1>
+                        <p class="section-subtitle" id="techLevelSubtitle"></p>
+                    </div>
+                </div>
+                <div class="tech-level-grid" id="techLevelGrid"></div>
+            </div>
+
+            <div id="learnWorkspaceView" class="hidden learn-workspace">
+                <aside class="learn-left-panel glass-card">
+                    <div class="learn-tech-header">
+                        <span id="workspaceTechLogo" class="tech-logo"></span>
+                        <div class="learn-tech-meta">
+                            <h3 class="stat-title" id="workspaceCourseTitle">Beginner Python</h3>
+                            <div class="glass-progress workspace-progress-bar"><div id="workspaceProgressBar" class="progress-fill"></div></div>
+                            <p class="stat-meta" id="workspaceProgressPct">0% complete</p>
+                        </div>
+                    </div>
+                    <ul id="workspaceLessonList" class="workspace-lesson-list"></ul>
+                </aside>
+
+                <main class="learn-center-panel glass-card" id="lessonContent">
+                    <p class="muted-text">Select a lesson from the sidebar.</p>
+                </main>
+
+                <aside class="learn-right-panel glass-card">
+                    <h4 class="stat-title">Lesson Progress</h4>
+                    <p class="stat-meta" id="rightPanelLessonIndex">—</p>
+                    <p class="stat-value" style="font-size:1.1rem;" id="rightPanelLessonStatus">—</p>
+                    <p class="stat-meta" id="rightPanelEstTime">—</p>
+                    <div class="right-panel-nav-labels">
+                        <p class="stat-meta">Previous: <span id="rightPanelPrevTitle">—</span></p>
+                        <p class="stat-meta">Next: <span id="rightPanelNextTitle">—</span></p>
+                    </div>
+                    <button class="glass-btn mark-complete-btn" id="markCompleteBtn" onclick="markLessonComplete()">✓ Mark Complete</button>
+                    <div class="right-panel-nav-btns">
+                        <button class="glass-btn" id="rightPanelPrevBtn" onclick="previousLesson()">← Previous</button>
+                        <button class="glass-btn" id="rightPanelNextBtn" onclick="nextLesson()">Next →</button>
+                    </div>
+                </aside>
+            </div>
+
+        </div>
+
+        <div id="realProjectsSection" class="section hidden">
+            <h1 class="page-title">Real Projects</h1>
+            <p class="section-subtitle">Build portfolio-ready projects — responsive grid, side-by-side detail views</p>
+
+            <div class="path-category-tabs">
+                <button class="category-tab active" onclick="showProjectTab('core', event)">Core Projects</button>
+                <button class="category-tab" onclick="showProjectTab('live', event)">Live Projects</button>
+            </div>
+
+            <div id="coreProjectsPanel" class="real-projects-grid-v2"></div>
+            <div id="liveProjectsPanel" class="real-projects-grid-v2 hidden"></div>
+        </div>
+
+        <div id="projectDetailSection" class="section hidden" data-project-name="">
+            <button class="back-btn" onclick="showSection('realProjectsSection')">← Back to Projects</button>
+            <div class="project-detail-header">
+                <div>
+                    <h1 id="projectTitle" class="page-title">Project Title</h1>
+                    <p id="projectDescription" class="section-subtitle"></p>
+                </div>
+                <div class="project-header-progress glass-card">
+                    <span class="stat-meta">Progress</span>
+                    <span id="projectHeaderProgress" class="stat-value">0%</span>
+                </div>
+            </div>
+
+            <div id="projectDetailContent" class="project-detail-card"></div>
+
+            <div class="project-detail-grid project-tools-grid">
+                <div class="glass-card project-tool-cell">
+                    <h3 class="stat-title">Build Checkpoints</h3>
+                    <div id="projectCheckpointsList" class="checkpoint-list"></div>
+                </div>
+                <div class="glass-card project-tool-cell">
+                    <h3 class="stat-title">Milestones</h3>
+                    <div id="projectMilestonesList" class="checkpoint-list"></div>
+                </div>
+                <div class="glass-card project-tool-cell">
+                    <h3 class="stat-title">Completion Status</h3>
+                    <div class="progress-bar glass-progress"><div id="progressFill" class="progress-fill" style="width:0%"></div></div>
+                    <p id="progressText" class="stat-value">0%</p>
+                    <label class="stat-meta" for="projectScoreInput">Project Score (0–100)</label>
+                    <input type="number" id="projectScoreInput" min="0" max="100" value="0" onchange="updateProjectScore()">
+                    <p class="stat-meta">Current: <strong id="projectScore">0</strong></p>
+                </div>
+                <div class="glass-card project-tool-cell">
+                    <h3 class="stat-title">Project Notes</h3>
+                    <textarea id="projectNotes" rows="4" placeholder="Notes for this project only…" oninput="saveProjectNotes()"></textarea>
+                    <p class="stat-meta">Time: <span id="timeSpent">0</span> min
+                        <button class="glass-btn" type="button" onclick="startTimer()">Start</button>
+                        <button class="glass-btn" type="button" onclick="stopTimer()">Stop</button>
+                    </p>
+                </div>
+            </div>
+
+            <div class="glass-card github-panel">
+                <h3 class="stat-title">GitHub Integration</h3>
+                <span id="githubConnectionBadge" class="github-connection-badge">Not connected</span>
+                <div class="github-connect-row">
+                    <input type="text" id="githubUsername" placeholder="GitHub username">
+                    <input type="password" id="githubToken" placeholder="Token (optional)">
+                    <button class="glass-btn" type="button" onclick="connectGitHubAccount()">Connect</button>
+                    <button class="glass-btn" type="button" onclick="disconnectGitHubAccount()">Disconnect</button>
+                </div>
+                <div class="github-sync-row">
+                    <input type="url" id="githubRepoUrl" placeholder="Repository URL (https://github.com/user/repo)">
+                    <input type="text" id="githubLink" placeholder="Submission link">
+                </div>
+                <div class="github-actions">
+                    <button class="glass-btn" type="button" onclick="syncGitHubRepository()">Sync Repository</button>
+                    <button class="glass-btn" type="button" onclick="pushProgressToGitHub()">Push Progress</button>
+                    <button class="glass-btn" type="button" onclick="submitProject()">Submit Project</button>
+                </div>
+                <p id="githubLastSync" class="stat-meta"></p>
+                <p id="githubSyncStatus" class="stat-meta"></p>
+                <p id="projectSubmitStatus" class="stat-meta"></p>
+            </div>
+        </div>
+
+        <div id="jobModeSection" class="section hidden">
+            <h1 class="page-title">Career Hub</h1>
+            <p class="section-subtitle">Resume analysis and job-targeted tailoring</p>
+
+            <div class="career-nav-tabs">
+                <button class="career-tab active" onclick="showCareerPanel('resume', event)">Resume Analyzer</button>
+                <button class="career-tab" onclick="showCareerPanel('tailor', event)">Tailor Resume</button>
+            </div>
+
+            <div id="careerResumePanel" class="career-panel">
+                <div class="career-analyzer-grid">
+                    <div class="career-input-col glass-card">
+                        <h2 class="stat-title">Your Resume</h2>
+                        <textarea id="resumeText" rows="12" placeholder="Paste your resume text here…"></textarea>
+                        <label class="glass-btn avatar-upload-btn">
+                            Upload Resume
+                            <input type="file" id="resumeFileUpload" accept=".txt,.md,.pdf,.doc,.docx" hidden onchange="handleResumeUpload(event)">
+                        </label>
+                        <input type="hidden" id="resumeUploadText">
+                        <p id="resumeUploadPreview" class="stat-meta"></p>
+                        <button class="glass-btn" type="button" onclick="analyzeResume()">Analyze Resume</button>
+                    </div>
+                    <div class="career-output-col glass-card">
+                        <h2 class="stat-title">Analysis Results</h2>
+                        <p class="stat-meta">ATS Score</p>
+                        <p id="atsScore" class="stat-value">—</p>
+                        <h3 class="stat-title">Detected Skills</h3>
+                        <ul id="skillsList" class="project-detail-list"></ul>
+                        <h3 class="stat-title">Missing Keywords</h3>
+                        <ul id="skillGapList" class="project-detail-list"></ul>
+                        <h3 class="stat-title">Keyword Suggestions</h3>
+                        <ul id="keywordSuggestions" class="project-detail-list"></ul>
+                        <h3 class="stat-title">Recommendations</h3>
+                        <ul id="resumeRecommendations" class="project-detail-list"></ul>
+                        <p id="resumeSuggestions" class="stat-meta">Paste or upload your resume to analyze.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="careerTailorPanel" class="career-panel hidden">
+                <div class="career-tailor-grid">
+                    <div class="career-tailor-col glass-card">
+                        <h2 class="stat-title">Job Description</h2>
+                        <textarea id="jobDescriptionText" rows="14" placeholder="Paste the job description here…"></textarea>
+                    </div>
+                    <div class="career-tailor-col glass-card">
+                        <h2 class="stat-title">Your Resume</h2>
+                        <textarea id="tailorResumeText" rows="14" placeholder="Paste your resume here…"></textarea>
+                    </div>
+                </div>
+                <button class="glass-btn" type="button" onclick="tailorResume()" style="margin:16px 0;">Generate Tailored Resume</button>
+                <div id="tailoredResumeOutput" class="glass-card tailored-output">Tailored resume will appear here…</div>
+            </div>
+        </div>
+
+        <div id="interviewSection" class="section hidden">
+
+            <h1 class="page-title">Interview Prep</h1>
+            <p class="section-subtitle">Mock interviews, technical depth, system design, and AI tracks — side-by-side practice workspace</p>
+
+            <div class="interview-nav-tabs">
+                <button class="category-tab active" onclick="showInterviewPanel('mock', event)">Mock Interview</button>
+                <button class="category-tab" onclick="showInterviewPanel('technical', event)">Technical Interview</button>
+                <button class="category-tab" onclick="showInterviewPanel('system-design', event)">System Design</button>
+                <button class="category-tab" onclick="showInterviewPanel('ai-track', event)">AI Interview Track</button>
+            </div>
+
+            <div id="interviewSectionIntro" class="glass-card interview-intro-card"></div>
+
+            <div class="interview-workspace-grid">
+                <aside class="interview-panel-col glass-card">
+                    <div id="interviewSubTopics"></div>
+                    <label class="muted-text">Difficulty
+                        <select id="interviewDifficulty">
+                            <option value="all">All</option>
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </label>
+                    <h3>Questions</h3>
+                    <ul id="interviewQuestionList" class="interview-q-list"></ul>
+                </aside>
+
+                <main class="interview-center-col glass-card interview-panel-col">
+                    <div id="interviewPanelMock" class="interview-panel"></div>
+                    <div id="interviewPanelTechnical" class="interview-panel hidden"></div>
+                    <div id="interviewPanelSystemDesign" class="interview-panel hidden"></div>
+                    <div id="interviewPanelAiTrack" class="interview-panel hidden"></div>
+
+                    <div id="mockInputModesPanel" class="mock-input-modes-wrap"></div>
+                    <p id="mockSessionStatus" class="muted-text"></p>
+
+                    <div id="interviewActiveQuestion"></div>
+
+                    <div id="interviewResponsePanel" class="mock-session-grid">
+                        <div class="mock-response-box">
+                            <h4>Your Response</h4>
+                            <textarea id="interviewAnswer" rows="5" placeholder="Type your answer, or use voice/video mode…"></textarea>
+                            <button type="button" id="mockVoiceBtn" class="glass-btn hidden" onclick="startMockVoiceCapture()">🎤 Start Voice Answer</button>
+                            <p id="mockVideoNote" class="muted-text hidden">Video mode: speak your answer aloud, then type a summary of what you said for evaluation.</p>
+                        </div>
+                        <details class="interview-sample-details">
+                            <summary>Reference answer</summary>
+                            <p id="interviewSampleAnswer" class="interview-sample-answer"></p>
+                        </details>
+                    </div>
+
+                    <div class="interview-actions">
+                        <button type="button" class="glass-btn" onclick="evaluateInterviewAnswer()">Evaluate Response</button>
+                    </div>
+                    <div id="interviewFeedback" class="interview-feedback"></div>
+                    <div id="voiceAnalysisPanel" class="voice-analysis-panel hidden"></div>
+                </main>
+
+                <aside class="interview-score-col glass-card interview-panel-col interview-score-panel">
+                    <h3>Score Tracking</h3>
+                    <input type="number" id="interviewScore" placeholder="Score 0–100" min="0" max="100">
+                    <button type="button" class="glass-btn" onclick="saveInterviewScore()">Save Score</button>
+                    <p id="interviewScoreStatus" class="muted-text">No score saved yet.</p>
+                    <div id="interviewProgressDisplay"></div>
+                    <h4>Recommendations</h4>
+                    <ul id="interviewRecommendations" class="interview-recommendations"></ul>
+                </aside>
+            </div>
+
+        </div>
+
+        <div id="codingLabSection" class="section hidden">
+            <h1 class="page-title">Code Lab</h1>
+            <p class="section-subtitle">Live coding workspace — use Virtual Recruiter in Coding Assistant mode for hints and solutions</p>
+            <div class="card glass-card code-lab-vr-prompt">
+                <p>Ask to write, explain, fix code, or get a hint — Virtual Recruiter opens in <strong>Coding Assistant</strong> mode.</p>
+                <button type="button" class="glass-btn" onclick="openCodeLabAssistant()">Open Coding Assistant</button>
+            </div>
+            <div class="card glass-card" style="margin-top:16px;">
+                <h3>Live Code Workspace</h3>
+                <div class="code-lab-grid">
+                    <textarea id="codeEditor" class="code-editor" placeholder="Write code here..."></textarea>
+                    <div class="code-output">
+                        <h4>Output</h4>
+                        <pre id="codeOutput">Run code to see output</pre>
+                    </div>
+                </div>
+                <button class="glass-btn" onclick="runCode()">Run Code</button>
+            </div>
+        </div>
+
+        <div id="analyticsSection" class="section hidden">
+            <h1>Analytics</h1>
+            <div class="card-box">
+                <div class="card">
+                    <h3>Daily Progress</h3>
+                    <p id="dailyProgress">42%</p>
+                </div>
+                <div class="card">
+                    <h3>Weekly Progress</h3>
+                    <p id="weeklyProgress">68%</p>
+                </div>
+                <div class="card">
+                    <h3>Monthly Progress</h3>
+                    <p id="monthlyProgress">82%</p>
+                </div>
+                <div class="card">
+                    <h3>Weak Areas</h3>
+                    <p id="weakAreas">React, Spring Boot</p>
+                </div>
+            </div>
+            <div class="card-box">
+                <div class="card">
+                    <h3>Lessons Completed</h3>
+                    <p id="lessonsCompletedMetric">0</p>
+                </div>
+                <div class="card">
+                    <h3>Projects Completed</h3>
+                    <p id="projectsCompletedMetric">0</p>
+                </div>
+                <div class="card">
+                    <h3>Quiz Score Avg</h3>
+                    <p id="quizScoreMetric">0%</p>
+                </div>
+            </div>
+            <div class="analytics-charts">
+                <div class="card">
+                    <h3>Topic Completion</h3>
+                    <p id="topicCompletion">74%</p>
+                </div>
+                <div class="card">
+                    <h3>Job Readiness Score</h3>
+                    <p id="jobReadinessScore">56%</p>
+                </div>
+                <div class="card">
+                    <h3>Skill Growth</h3>
+                    <p id="skillGrowthMetric">0%</p>
+                </div>
+                <div class="card">
+                    <h3>Learning Insights</h3>
+                    <p id="learningInsightsMetric">Collecting data...</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="portfolioSection" class="section hidden">
+            <h1>Portfolio Mode</h1>
+            <p class="section-subtitle">Recruiter-facing snapshot of AI engineering readiness</p>
+            <div class="card-box">
+                <div class="card">
+                    <h3>Skills Learned</h3>
+                    <ul id="portfolioSkills"></ul>
+                </div>
+                <div class="card">
+                    <h3>Projects Completed</h3>
+                    <ul id="portfolioProjects"></ul>
+                </div>
+                <div class="card">
+                    <h3>Certificates Earned</h3>
+                    <ul id="portfolioCertificates"></ul>
+                </div>
+                <div class="card">
+                    <h3>Interview Readiness</h3>
+                    <p id="portfolioInterviewReadiness">0%</p>
+                </div>
+            </div>
+            <div class="card" style="margin-top:20px;">
+                <h3>Progress Statistics</h3>
+                <p id="portfolioProgressStats">Loading...</p>
+            </div>
+        </div>
+
+        <div id="adminSection" class="section hidden admin-only">
+            <h1 class="page-title">Admin Dashboard</h1>
+            <p class="section-subtitle">Platform overview — admin access only</p>
+            <div class="card-grid">
+                <div class="card glass-card"><h3>Users</h3><p id="adminUsers">0</p></div>
+                <div class="card glass-card"><h3>Courses</h3><p id="adminCourses">46 paths</p></div>
+                <div class="card glass-card"><h3>Projects</h3><p id="adminProjects">0</p></div>
+                <div class="card glass-card"><h3>Learning Progress</h3><p id="adminProgress">0%</p></div>
+                <div class="card glass-card"><h3>Certificates</h3><p id="adminCertificates">0</p></div>
+                <div class="card glass-card"><h3>Hours Learned</h3><p id="adminHours">0</p></div>
+                <div class="card glass-card"><h3>Activity</h3><ul id="adminActivity"></ul></div>
+            </div>
+        </div>
+
+        <div id="profileSection" class="section hidden">
+            <h1 class="page-title">My Profile</h1>
+            <div class="profile-container">
+                <div class="profile-avatar-section glass-card" style="padding:20px;">
+                    <div id="profileAvatarDisplay" class="profile-avatar-img" aria-label="Profile avatar">👤</div>
+                    <div>
+                        <h3 class="stat-title" style="margin:0 0 4px;" id="profileDisplayName">—</h3>
+                        <p class="stat-meta" id="profileDisplayEmail">—</p>
+                    </div>
+                </div>
+                <div class="profile-stats profile-stats-grid">
+                    <div class="stat-card glass-card"><h4>Name</h4><p id="profileName">—</p></div>
+                    <div class="stat-card glass-card"><h4>Email</h4><p id="profileEmail">—</p></div>
+                    <div class="stat-card glass-card"><h4>Current Level</h4><p id="profileLevel">Beginner</p></div>
+                    <div class="stat-card glass-card"><h4>Day Streak</h4><p id="profileStreak">0 days</p></div>
+                    <div class="stat-card glass-card"><h4>Hours Learned</h4><p id="profileHours">0 hours</p></div>
+                </div>
+                <div class="profile-section glass-card profile-notifications-panel">
+                    <h3>Notifications</h3>
+                    <div id="profileNotificationsList"></div>
+                    <button class="glass-btn" style="margin-top:12px;" onclick="markAllNotificationsRead()">Mark all read</button>
+                </div>
+                <div class="profile-section glass-card profile-achievements-compact">
+                    <h3>Achievements</h3>
+                    <div class="achievements-row" id="profileAchievementsCompact"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="settingsSection" class="section hidden">
+            <h1 class="page-title">Settings</h1>
+            <div class="card glass-card">
+                <h3>Appearance</h3>
+                <div class="btn-row">
+                    <button class="glass-btn" onclick="setTheme('dark')">Dark Mode</button>
+                    <button class="glass-btn" onclick="setTheme('light')">Light Mode</button>
+                </div>
+            </div>
+            <div class="card glass-card" style="margin-top:16px;">
+                <h3>Preferences</h3>
+                <p class="muted-text">Theme, notifications, and learning preferences.</p>
+                <button class="glass-btn" onclick="showSection('learnSection')">Browse Courses</button>
+            </div>
+            <div class="card glass-card" style="margin-top:16px;">
+                <h3>Update Profile</h3>
+                <input type="text" id="editProfileName" placeholder="Update Name">
+                <input type="email" id="editProfileEmail" placeholder="Update Email">
+                <button class="glass-btn" onclick="saveProfile()">Save Changes</button>
+            </div>
+            <div class="card glass-card" style="margin-top:16px;">
+                <button class="glass-btn" onclick="showSection('dashboardSection')">Back to Dashboard</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div id="globalRecruiterShell" class="global-vr-shell">
+    <button type="button" id="vrToggleBtn" class="vr-toggle-btn" onclick="toggleGlobalRecruiter()" title="Virtual Recruiter">🤖 Virtual Recruiter</button>
+    <div id="chatbotBox" class="chatbot-box global-vr-panel hidden">
+        <div class="chatbot-header">
+            <h4>Virtual Recruiter</h4>
+            <div class="vr-header-actions">
+                <button type="button" onclick="minimizeRecruiter()" class="close-btn" title="Minimize">—</button>
+                <button type="button" onclick="showVrPanel('history')" class="close-btn" title="History">📜</button>
+                <button type="button" onclick="clearRecruiterHistory()" class="close-btn" title="Delete history">🗑</button>
+                <button type="button" onclick="toggleGlobalRecruiter()" class="close-btn" title="Close">✕</button>
+            </div>
+        </div>
+        <div id="recruiterGreeting" class="recruiter-greeting hidden"></div>
+        <p id="recruiterClock" class="recruiter-clock muted-text vr-minimize-hide"></p>
+        <div class="chat-input-row vr-mode-row vr-minimize-hide">
+            <select id="mentorMode" onchange="onMentorModeChange()">
+                <option value="general-assistant">General Assistant</option>
+            </select>
+        </div>
+        <p id="mentorHints" class="vr-hints vr-minimize-hide">Mode: General Assistant</p>
+        <div id="vrHistoryPanel" class="vr-history-panel hidden vr-minimize-hide">
+            <h4>Conversation History</h4>
+            <ul id="vrHistoryList"></ul>
+        </div>
+        <div id="chatMessages" class="chat-messages career-vr-messages vr-minimize-hide"></div>
+        <div class="chat-input-row vr-minimize-hide" id="chatInputRow">
+            <input type="text" id="chatInput" placeholder="Ask Virtual Recruiter...">
+            <button type="button" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+</div>
+
+
+<script src="script.js"></script>
+<script src="src/dashboard/dashboard-challenge.js"></script>
+<script src="src/virtual-recruiter/vr-greeting.js"></script>
+<script type="module" src="src/dashboard/dashboard-main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,187 @@
+/**
+ * Phase 4 — Interview Prep & Virtual Recruiter
+ */
+
+/* Interview side-by-side workspace */
+.interview-workspace-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr 260px;
+  gap: 16px;
+  align-items: start;
+}
+
+.interview-panel-col {
+  padding: 16px;
+  overflow: hidden;
+  max-height: calc(100vh - 220px);
+  overflow-y: auto;
+}
+
+.interview-center-col {
+  min-height: 420px;
+}
+
+.interview-topic-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.interview-topic-btn.active {
+  background: rgba(190, 24, 93, 0.45) !important;
+  border-color: rgba(232, 160, 168, 0.55) !important;
+}
+
+.interview-q-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.interview-q-btn {
+  width: 100%;
+  text-align: left;
+  background: rgba(74, 0, 18, 0.35);
+  border: 1px solid rgba(199, 123, 127, 0.25);
+  border-radius: 10px;
+  padding: 10px;
+  color: #f5e6ea;
+  font-size: 0.82rem;
+  cursor: pointer;
+  margin-bottom: 6px;
+  word-wrap: break-word;
+}
+
+.interview-q-item.active .interview-q-btn {
+  border-color: rgba(232, 160, 168, 0.5);
+  background: rgba(157, 23, 77, 0.35);
+}
+
+.mock-input-modes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.mock-mode-btn {
+  padding: 12px !important;
+  text-align: center;
+}
+
+.mock-mode-btn.active {
+  border-color: var(--coral) !important;
+  box-shadow: 0 0 0 2px rgba(251, 113, 133, 0.35);
+}
+
+.mock-session-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.mock-question-box,
+.mock-response-box {
+  background: rgba(74, 0, 18, 0.3);
+  border: 1px solid rgba(199, 123, 127, 0.25);
+  border-radius: 12px;
+  padding: 14px;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+.mock-question-box h4,
+.mock-response-box h4 {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  color: var(--rose);
+  margin: 0 0 8px;
+}
+
+.voice-analysis-panel {
+  margin-top: 12px;
+  padding: 12px;
+  background: rgba(74, 0, 18, 0.35);
+  border-radius: 12px;
+  border: 1px solid rgba(199, 123, 127, 0.25);
+}
+
+.voice-analysis-panel ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  font-size: 0.85rem;
+}
+
+.interview-score-panel .stat-value {
+  font-size: 1.75rem;
+}
+
+.interview-nav-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+/* VR — silent startup, minimize */
+.recruiter-greeting {
+  display: none !important;
+}
+
+.recruiter-greeting.hidden {
+  display: none !important;
+}
+
+.global-vr-panel.vr-minimized {
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: hidden;
+}
+
+.global-vr-panel.vr-minimized .vr-minimize-hide {
+  display: none !important;
+}
+
+.global-vr-panel .chatbot-header {
+  cursor: default;
+}
+
+.code-lab-vr-prompt {
+  padding: 18px;
+  text-align: center;
+}
+
+.code-lab-vr-prompt .glass-btn {
+  margin-top: 12px;
+}
+
+@media (max-width: 1100px) {
+  .interview-workspace-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .interview-score-col {
+    grid-column: 1 / -1;
+  }
+
+  .mock-session-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .interview-workspace-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .interview-panel-col {
+    max-height: none;
+  }
+
+  .mock-input-modes {
+    grid-template-columns: 1fr;
+  }
+}

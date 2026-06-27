@@ -1,0 +1,199 @@
+openapi: 3.0.3
+info:
+  title: NexusAI API
+  description: Real backend integrations for NexusAI platform
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api
+    description: Local development
+tags:
+  - name: Auth
+  - name: Users
+  - name: Progress
+  - name: Notifications
+  - name: AI
+  - name: Resume
+  - name: GitHub
+  - name: Speech
+  - name: Uploads
+paths:
+  /auth/signup:
+    post:
+      tags: [Auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, password]
+              properties:
+                name: { type: string, example: Jane Doe }
+                email: { type: string, example: jane@example.com }
+                password: { type: string, example: SecurePass123 }
+                avatar: { type: object }
+      responses:
+        "201":
+          description: User created
+          content:
+            application/json:
+              example: { success: true, message: Signup successful }
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Login and receive JWT
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string }
+                password: { type: string }
+                rememberMe: { type: boolean, example: true }
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              example:
+                success: true
+                token: eyJhbGciOiJIUzI1NiIs...
+                user: { id: uuid, name: Jane, email: jane@example.com, role: user }
+  /auth/forgot-password:
+    post:
+      tags: [Auth]
+      summary: Request password reset token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string }
+      responses:
+        "200":
+          description: Reset token generated (dev mode returns token)
+  /auth/reset-password:
+    post:
+      tags: [Auth]
+      summary: Reset password with token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token: { type: string }
+                newPassword: { type: string }
+  /auth/me:
+    get:
+      tags: [Auth]
+      summary: Get current user (protected)
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Current user profile
+  /ai/chat:
+    post:
+      tags: [AI]
+      summary: Virtual Recruiter AI chat
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message: { type: string, example: Give me a Java interview question }
+                mode: { type: string, example: interview-coach }
+                context: { type: object }
+      responses:
+        "200":
+          content:
+            application/json:
+              example: { success: true, reply: "...", provider: nexusai }
+  /resume/analyze:
+    post:
+      tags: [Resume]
+      summary: Parse resume and compute ATS score
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text: { type: string }
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                success: true
+                atsScore: 72
+                missingKeywords: [docker, kubernetes]
+                recommendations: []
+  /resume/tailor:
+    post:
+      tags: [Resume]
+      summary: Tailor resume to job description
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resume: { type: string }
+                jobDescription: { type: string }
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                success: true
+                matchingScore: 68
+                tailoredResume: "..."
+  /github/connect:
+    post:
+      tags: [GitHub]
+      summary: Connect GitHub account
+      security: [{ bearerAuth: [] }]
+  /github/repos:
+    get:
+      tags: [GitHub]
+      summary: List user repositories
+      security: [{ bearerAuth: [] }]
+    post:
+      tags: [GitHub]
+      summary: Create repository
+      security: [{ bearerAuth: [] }]
+  /github/commits:
+    get:
+      tags: [GitHub]
+      summary: List commits for repository URL
+      security: [{ bearerAuth: [] }]
+  /notifications:
+    get:
+      tags: [Notifications]
+      summary: List notifications
+      security: [{ bearerAuth: [] }]
+  /speech/evaluate:
+    post:
+      tags: [Speech]
+      summary: Evaluate interview speech transcript
+      security: [{ bearerAuth: [] }]
+  /uploads/{type}:
+    post:
+      tags: [Uploads]
+      summary: Upload resume, avatar, or project file
+      security: [{ bearerAuth: [] }]
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

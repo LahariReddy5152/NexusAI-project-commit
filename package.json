@@ -1,0 +1,77 @@
+{
+  "name": "nexusai",
+  "version": "1.0.0",
+  "description": "NexusAI — AI-powered learning and career platform",
+  "author": "Lahari Reddy",
+  "license": "ISC",
+  "type": "module",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "electron": "electron .",
+    "electron:dev": "electron .",
+    "build:win": "electron-builder --win",
+    "build:dir": "electron-builder --win --dir",
+    "generate:logo": "node scripts/generate-logo-assets.mjs"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.2.0",
+    "swagger-ui-express": "^5.0.1",
+    "three": "^0.160.0",
+    "uuid": "^14.0.1"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "electron": "^35.7.5",
+    "electron-builder": "^25.1.8",
+    "playwright": "^1.61.1",
+    "png-to-ico": "^3.0.1",
+    "png2icons": "^2.0.1"
+  },
+  "build": {
+    "appId": "com.nexusai.desktop",
+    "productName": "NexusAI",
+    "copyright": "Copyright © 2026 NexusAI",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "**/*",
+      "!dist/**",
+      "!scripts/**",
+      "!data/**",
+      "!.git/**",
+      "!**/*.md"
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "NexusAI-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "NexusAI",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico"
+    }
+  }
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NexusAI Login</title>
+    <meta name="author" content="Lahari Reddy">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="assets/logo/favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/logo/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="assets/logo/png/nexusai-app-icon-256.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="login-body">
+
+<div class="ui-glass-scrim"></div>
+
+<div class="login-container glass-card">
+
+    <h1 class="nexusai-brand">
+        <img src="assets/logo/nexusai-horizontal-transparent.svg" alt="NexusAI — Learn, Build, Grow" class="nexusai-logo nexusai-logo--login" width="300" height="75">
+    </h1>
+
+    <input type="text" id="name" placeholder="Enter Name">
+    <input type="email" id="email" placeholder="Enter Email">
+    <input type="password" id="password" placeholder="Enter Password">
+
+    <label class="remember-me-row">
+        <input type="checkbox" id="rememberMe"> Remember me
+    </label>
+
+    <div class="avatar-picker">
+        <label class="section-label">Choose Avatar</label>
+        <div class="avatar-options">
+            <button type="button" class="avatar-opt" data-avatar="male" onclick="selectAvatar('male')" title="Male">👨</button>
+            <button type="button" class="avatar-opt" data-avatar="female" onclick="selectAvatar('female')" title="Female">👩</button>
+            <label class="avatar-upload-btn glass-btn">
+                Upload
+                <input type="file" id="avatarUpload" accept="image/*" hidden onchange="handleAvatarUpload(event)">
+            </label>
+        </div>
+        <img id="avatarPreview" class="avatar-preview hidden" alt="Avatar preview">
+    </div>
+
+    <button type="button" class="forgot-link" onclick="window.location.href='forgot-password.html'">Forgot Password?</button>
+
+    <div class="btn-row">
+        <button class="glass-btn" onclick="signup()">Signup</button>
+        <button class="glass-btn" onclick="login()">Login</button>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+  <defs>
+    <linearGradient id="nexusTrace" x1="8" y1="92" x2="92" y2="8" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fb7185"/>
+      <stop offset="42%" stop-color="#c084fc"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="nexusNode" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fda4af"/>
+      <stop offset="55%" stop-color="#d8b4fe"/>
+      <stop offset="100%" stop-color="#7dd3fc"/>
+    </linearGradient>
+    <filter id="nexusGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="1.6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Circuit-style N: smooth curved trace with node endpoints -->
+  <path
+    d="M 22 78 V 26
+       C 22 22 24 20 28 22
+       C 46 34 54 66 72 78
+       C 76 80 78 78 78 74
+       V 22"
+    stroke="url(#nexusTrace)"
+    stroke-width="5.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    filter="url(#nexusGlow)"
+  />
+  <circle cx="22" cy="22" r="4.8" fill="url(#nexusNode)" stroke="#fdf2f8" stroke-width="1.2"/>
+  <circle cx="22" cy="78" r="4.8" fill="url(#nexusNode)" stroke="#fdf2f8" stroke-width="1.2"/>
+  <circle cx="78" cy="22" r="4.8" fill="url(#nexusNode)" stroke="#fdf2f8" stroke-width="1.2"/>
+  <circle cx="78" cy="78" r="4.8" fill="url(#nexusNode)" stroke="#fdf2f8" stroke-width="1.2"/>
+  <circle cx="50" cy="50" r="3.2" fill="#e879f9" stroke="#fdf2f8" stroke-width="1"/>
+</svg>

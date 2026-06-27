@@ -1,0 +1,13 @@
+/* NexusAI — modular styles entry */
+@import url("./src/shared/styles/styles-part-01.css");
+@import url("./src/shared/styles/styles-part-02.css");
+@import url("./src/shared/styles/styles-part-03.css");
+@import url("./src/shared/styles/styles-part-04.css");
+@import url("./src/shared/styles/styles-part-05.css");
+@import url("./src/shared/styles/styles-part-06.css");
+@import url("./src/shared/styles/styles-part-07-cosmic-crimson.css");
+@import url("./src/shared/styles/styles-part-08-phase1-design.css");
+@import url("./src/shared/styles/styles-part-09-learn-phase2.css");
+@import url("./src/shared/styles/styles-part-10-phase3-projects-career.css");
+@import url("./src/shared/styles/styles-part-11-phase4-interview-vr.css");
+@import url("./src/shared/styles/styles-part-12-phase5-polish.css");

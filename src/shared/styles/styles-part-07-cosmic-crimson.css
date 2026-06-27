@@ -1,0 +1,296 @@
+/**
+ * Priority 8 — Cosmic Crimson theme (visual only, loaded last)
+ */
+
+/* Login — large galaxy visible, dark glass card, rose borders */
+.login-body .ui-glass-scrim {
+    background: transparent !important;
+}
+
+.login-body .login-container {
+    width: min(420px, 92vw);
+    padding: 44px 40px;
+    background: rgba(30, 5, 12, 0.72) !important;
+    border: 1px solid rgba(232, 160, 168, 0.48) !important;
+    border-radius: 24px;
+    box-shadow:
+        0 28px 72px rgba(74, 0, 18, 0.72),
+        0 0 48px rgba(128, 0, 32, 0.28),
+        inset 0 1px 0 rgba(232, 160, 168, 0.12);
+}
+
+.login-body .login-container h1 {
+    text-align: center;
+    background: linear-gradient(135deg, #fce7f3, #e8a0a8, #be123c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.login-container input,
+.login-container select {
+    background: rgba(20, 4, 10, 0.88);
+    border: 1px solid rgba(199, 123, 127, 0.4);
+    color: #fdf2f8;
+}
+
+.login-container input::placeholder {
+    color: #c9a0a8;
+}
+
+.login-container input:focus {
+    outline: none;
+    border-color: rgba(232, 160, 168, 0.65);
+    box-shadow: 0 0 0 3px rgba(190, 24, 93, 0.25);
+}
+
+/* Cards — dark glass, galaxy bleeds through */
+.card,
+.project-card,
+.module-card,
+.project-card-large,
+.stat-card,
+.cert-card,
+.interview-panel,
+.career-panel .card,
+.placement-assessment-modal,
+.tech-level-card {
+    background: rgba(36, 6, 14, 0.58) !important;
+    border: 1px solid rgba(199, 123, 127, 0.3) !important;
+    border-radius: var(--card-radius, 20px);
+    box-shadow: 0 10px 36px rgba(74, 0, 18, 0.4);
+    transition: transform var(--transition-smooth), box-shadow var(--transition-smooth), border-color var(--transition-smooth);
+}
+
+.card:hover,
+.project-card:hover,
+.module-card:hover,
+.project-card-large:hover,
+.stat-card:hover,
+.cert-card:hover {
+    border-color: rgba(232, 160, 168, 0.45) !important;
+    box-shadow: 0 16px 44px rgba(74, 0, 18, 0.5), 0 0 20px rgba(190, 24, 93, 0.15);
+}
+
+/* Buttons & progress */
+button:not(.nav-btn):not(.close-btn):not(.menu-btn):not(.forgot-link) {
+    background: linear-gradient(135deg, #9f1239, #7f1d1d, #4a0012) !important;
+    border: 1px solid rgba(232, 160, 168, 0.3) !important;
+    color: #fdf2f8 !important;
+    transition: all var(--transition-smooth);
+}
+
+button:not(.nav-btn):not(.close-btn):not(.menu-btn):not(.forgot-link):hover {
+    box-shadow: 0 10px 24px rgba(74, 0, 18, 0.5), 0 0 16px rgba(190, 24, 93, 0.25);
+    transform: translateY(-2px);
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, #be123c, #9d174d, #6b21a8) !important;
+}
+
+.glass-progress {
+    background: rgba(74, 0, 18, 0.45);
+}
+
+/* Tabs — rose active state */
+.category-tab.active,
+.path-tab.active,
+.career-tab.active,
+.interview-nav-tabs .category-tab.active {
+    background: linear-gradient(135deg, #be123c, #9d174d) !important;
+    border-color: rgba(232, 160, 168, 0.55) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 16px rgba(190, 24, 93, 0.35);
+}
+
+.category-tab:hover,
+.path-tab:hover,
+.career-tab:hover {
+    border-color: rgba(232, 160, 168, 0.4);
+    background: rgba(157, 23, 77, 0.25);
+}
+
+/* Sidebar — dark red */
+.sidebar {
+    background: rgba(58, 8, 18, 0.92) !important;
+    border-right: 1px solid rgba(199, 123, 127, 0.35) !important;
+    box-shadow: 4px 0 24px rgba(74, 0, 18, 0.35);
+}
+
+/* Text contrast */
+.section h1,
+.page-title,
+h2, h3, h4 {
+    color: #fdf2f8;
+}
+
+.muted-text,
+.section-subtitle,
+.greeting-date {
+    color: #e9c0c8 !important;
+}
+
+/* Virtual Recruiter panel */
+#chatbotBox {
+    background: rgba(36, 6, 14, 0.88) !important;
+    border: 1px solid rgba(199, 123, 127, 0.38) !important;
+    box-shadow: 0 20px 56px rgba(74, 0, 18, 0.55), 0 0 28px rgba(128, 0, 32, 0.2);
+}
+
+.vr-toggle-btn {
+    background: linear-gradient(135deg, #9f1239, #4a0012) !important;
+    border: 1px solid rgba(232, 160, 168, 0.45) !important;
+    box-shadow: 0 10px 28px rgba(74, 0, 18, 0.55);
+}
+
+.chatbot-header h4 {
+    color: var(--rose) !important;
+}
+
+/* Learn portal */
+.lesson-sidebar,
+.course-catalog-card,
+.module-card {
+    background: rgba(36, 6, 14, 0.55) !important;
+}
+
+.diagram-block,
+pre,
+.code-editor,
+textarea,
+#codeEditor,
+.chat-input-row input,
+select,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"] {
+    background: rgba(24, 4, 10, 0.75) !important;
+    border: 1px solid rgba(199, 123, 127, 0.28) !important;
+    color: #fdf2f8 !important;
+}
+
+/* Replace pale blue / peach accents */
+.level-badge {
+    background: rgba(190, 24, 93, 0.18) !important;
+    border-color: rgba(232, 160, 168, 0.35) !important;
+}
+
+.level-badge.level-beginner { color: #f9a8d4 !important; }
+.level-badge.level-intermediate { color: #e8a0a8 !important; }
+.level-badge.level-advanced { color: #d8b4fe !important; }
+.level-badge.level-expert { color: #f472b6 !important; }
+
+.portal-topic-card h4,
+.assessment-prior-score,
+.challenge-path-label {
+    color: var(--rose) !important;
+}
+
+.lock-preview-card {
+    border-left-color: #be123c !important;
+}
+
+/* Code lab & interview */
+.code-lab-messages,
+.career-vr-messages,
+.interview-workspace {
+    background: transparent;
+}
+
+/* Topbar */
+.topbar h2 {
+    color: #fdf2f8;
+}
+
+/* Mobile — preserve responsiveness */
+@media (max-width: 768px) {
+    .login-body .login-container {
+        width: min(94vw, 400px);
+        padding: 32px 24px;
+    }
+
+    .sidebar {
+        background: rgba(58, 8, 18, 0.96) !important;
+    }
+
+    .main-content {
+        padding: 20px 16px;
+    }
+
+    #chatbotBox.global-vr-panel {
+        width: min(96vw, 400px);
+        right: 2vw;
+    }
+}
+
+/* Accessibility — focus rings */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid rgba(232, 160, 168, 0.75);
+    outline-offset: 2px;
+}
+
+/* Override legacy blue accents (parts 02–05) */
+.btn-secondary {
+    background: rgba(190, 24, 93, 0.2) !important;
+    border-color: rgba(232, 160, 168, 0.35) !important;
+}
+
+.progress-bar-cert {
+    background: rgba(157, 23, 77, 0.45) !important;
+}
+
+.chatbot-btn {
+    box-shadow: 0 8px 24px rgba(74, 0, 18, 0.45) !important;
+}
+
+.chatbot-btn:hover {
+    box-shadow: 0 12px 32px rgba(74, 0, 18, 0.55) !important;
+}
+
+.back-btn:hover {
+    background: rgba(157, 23, 77, 0.25) !important;
+}
+
+.lesson-header-card {
+    background: linear-gradient(135deg, rgba(190, 24, 93, 0.12), rgba(107, 33, 168, 0.12)) !important;
+}
+
+.lesson-toc li:hover {
+    background: rgba(157, 23, 77, 0.22) !important;
+}
+
+.nav-btn-next:hover {
+    box-shadow: 0 8px 16px rgba(74, 0, 18, 0.4) !important;
+}
+
+.quiz-container {
+    background: rgba(74, 0, 18, 0.35) !important;
+    border: 1px solid rgba(199, 123, 127, 0.28);
+}
+
+.quiz-option:hover {
+    background: rgba(157, 23, 77, 0.22) !important;
+}
+
+.interview-topics {
+    background: rgba(74, 0, 18, 0.35) !important;
+}
+
+.greeting-card,
+.lesson-meta-badge,
+.difficulty-badge {
+    background: rgba(190, 24, 93, 0.2) !important;
+}
+
+.module-card:hover,
+.portal-topic-card:hover,
+.project-card-large:hover {
+    border-color: rgba(232, 160, 168, 0.45) !important;
+    box-shadow: 0 8px 24px rgba(74, 0, 18, 0.35) !important;
+}

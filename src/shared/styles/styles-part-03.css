@@ -1,0 +1,406 @@
+.cert-status {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.cert-card.unlocked .cert-status {
+    color: #10b981;
+}
+
+.progress-bar-cert {
+    height: 6px;
+    background: rgba(37, 99, 235, 0.3);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 10px;
+    background: linear-gradient(90deg, var(--primary-color), #7c3aed);
+}
+
+.progress-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 8px;
+}
+
+.chatbot-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+.chatbot-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 32px rgba(37, 99, 235, 0.6);
+}
+
+.bot-icon {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.bot-text {
+    font-size: 10px;
+    text-align: center;
+    line-height: 1.2;
+}
+
+#chatbotBox{
+position:fixed;
+bottom:100px;
+right:20px;
+width:380px;
+height:550px;
+background:rgba(15, 20, 35, 0.75);
+backdrop-filter: blur(var(--glass-blur));
+-webkit-backdrop-filter: blur(var(--glass-blur));
+border-radius:15px;
+display:flex;
+flex-direction:column;
+z-index:9999;
+border:1px solid rgba(255,255,255,0.12);
+overflow:hidden;
+max-height:calc(100vh - 140px);
+box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+}
+
+#chatbotBox.career-vr-embedded {
+    position: relative !important;
+    bottom: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 520px;
+    max-height: 720px;
+    z-index: 1 !important;
+    margin-top: 8px;
+}
+
+.global-vr-shell {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 10000;
+}
+
+.vr-toggle-btn {
+    padding: 12px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(136, 204, 255, 0.4);
+    background: rgba(37, 99, 235, 0.85);
+    color: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.vr-toggle-btn.hidden {
+    display: none !important;
+}
+
+#chatbotBox.global-vr-panel {
+    position: absolute;
+    bottom: 56px;
+    right: 0;
+    width: min(400px, 92vw);
+    height: min(580px, 75vh);
+    display: flex;
+    flex-direction: column;
+}
+
+.career-vr-messages {
+    min-height: 280px;
+    max-height: 380px;
+}
+
+.vr-hints {
+    padding: 0 14px 8px;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.vr-settings-panel label {
+    display: block;
+    margin: 10px 14px;
+    font-size: 0.9rem;
+}
+
+.chatbot-btn {
+    display: none !important;
+}
+
+#chatbotBox.minimized {
+    height: 62px;
+}
+
+#chatbotBox.minimized .chat-messages,
+#chatbotBox.minimized #chatInputRow,
+#chatbotBox.minimized #mentorHints {
+    display: none;
+}
+
+#chatbotBox.minimized .chat-input-row {
+    display: none;
+}
+
+.chatbot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.chatbot-header h4 {
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.close-btn {
+    background: transparent !important;
+    border: none !important;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 !important;
+}
+
+.chat-messages{
+flex:1;
+overflow-y:auto;
+padding:15px;
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.chat-messages p {
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    word-wrap: break-word;
+}
+
+.chat-messages p:nth-child(odd) {
+    background: var(--primary-color);
+    align-self: flex-end;
+    max-width: 80%;
+}
+
+.chat-messages p:nth-child(even) {
+    background: rgba(255,255,255,0.1);
+    align-self: flex-start;
+    max-width: 80%;
+}
+
+.chat-input-row{
+display:flex;
+gap:10px;
+padding:15px;
+border-top:1px solid rgba(255,255,255,0.1);
+background:#111827;
+}
+
+.chat-input-row input{
+    flex:1;
+    width:auto;
+    min-width:220px;
+    height:45px;
+    background:#1f2937;
+    color:white;
+    border:1px solid #374151;
+    padding:10px;
+}
+
+.chat-input-row input::placeholder {
+    color: var(--text-secondary);
+}
+
+.chat-input-row button {
+    padding: 10px 20px !important;
+    min-width: 70px;
+}
+
+@media(max-width:768px){
+
+    .sidebar{
+        position:fixed;
+        left:-220px;
+        top:0;
+        height:100%;
+        transition:0.3s;
+        z-index:1000;
+    }
+
+    .sidebar.active{
+        left:0;
+    }
+
+    .menu-btn{
+        display:block;
+        padding:10px;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+
+    .code-lab-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .real-projects-grid,
+    .certifications-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .chatbot-box {
+        width: calc(100vw - 40px);
+        right: 20px;
+        bottom: 100px;
+    }
+
+    .chatbot-btn {
+        width: 60px;
+        height: 60px;
+        bottom: 20px;
+        right: 20px;
+    }
+}
+
+.light-mode{
+    background:white;
+    color:black;
+    --dark-bg: #f5f5f5;
+    --text-primary: #000000;
+    --text-secondary: #666666;
+}
+
+.light-mode .card,
+.light-mode .project-card,
+.light-mode .module-card {
+    background:#f3f4f6;
+    color:black;
+}
+
+.light-mode .sidebar{
+    background:#e5e7eb;
+}
+
+.light-mode .sidebar button {
+    color: #374151;
+}
+
+.light-mode .sidebar button:hover {
+    background: rgba(37, 99, 235, 0.15);
+    color: var(--primary-color);
+}
+
+/* Learning Portal Styles */
+.learning-path-container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.path-progress-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.path-progress-card h3 {
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+.path-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.path-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary-color), #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 5px;
+}
+
+.modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.module-card-learning {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.module-card-learning:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary-color);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.2);
+}
+
+.module-card-learning.completed {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.module-card-learning.completed::after {
+    content: "✓";
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 30px;
