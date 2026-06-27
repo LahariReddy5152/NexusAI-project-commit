@@ -34,7 +34,7 @@ First production release of **NexusAI** — a full-stack AI engineering learning
 - JWT authentication (signup, login, remember me, password reset)
 - SQLite persistence for users, progress, and notifications
 - Express 5 REST API with OpenAPI / Swagger documentation
-- Cosmic burgundy glassmorphism UI with official NexusAI branding
+- Premium **light mode** UI (default) with optional dark mode; modular CSS architecture (13 style parts)
 - Electron Windows desktop app with NSIS installer and portable build
 
 ---
@@ -65,7 +65,24 @@ npm install
 npm run build:win
 ```
 
-**Desktop data:** `%APPDATA%\nexusai\data\nexusai.db`
+**Desktop data:** `%APPDATA%\nexusai\nexusai.db`
+
+### Screenshots
+
+Light mode UI screenshots (demo user **Lahari**) are in `docs/screenshots/`:
+
+| File | Page |
+|------|------|
+| `01-login.png` | Login |
+| `02-dashboard.png` | Dashboard |
+| `03-learn.png` | Learn |
+| `04-projects.png` | Real Projects |
+| `05-interview-prep.png` | Interview Prep |
+| `06-career.png` | Career |
+| `07-virtual-recruiter.png` | Virtual Recruiter |
+| `08-desktop-installer.png` | Windows installer |
+| `09-profile.png` | Profile |
+| `10-code-lab.png` | Code Lab |
 
 ### Optional environment
 
@@ -90,17 +107,21 @@ JWT_SECRET=your-production-secret
 - Electron desktop shell with embedded Express server
 - Windows NSIS installer and portable executable
 - Native desktop notifications via Electron IPC
-- Phase verification scripts (phases 1–8)
+- Phase verification scripts (phases 1–8, 10)
 
 ### Changed
 - Migrated from localStorage-only auth to real JWT + SQLite backend
-- Redesigned UI with cosmic crimson theme and modular CSS architecture
+- Light modern UI with optional dark mode; modular CSS architecture (13 style parts)
 - Packaged Electron static assets via `app.getAppPath()` for `app.asar` compatibility
+- Dashboard statistics, projects, interview scores, code lab, and settings synced to SQLite
 
 ### Fixed
 - Windows code-sign symlink blocker (`signAndEditExecutable: false`)
 - Packaged application path resolution for production builds
 - Logo SVG encoding issues for PNG export pipeline
+- Session token UNIQUE constraint on back-to-back logins
+- JavaScript parse error in notifications module blocking dashboard navigation
+- Full end-to-end stabilization (Phase 11): persistence, navigation, responsive layout
 
 ---
 
@@ -120,8 +141,8 @@ JWT_SECRET=your-production-secret
 
 | File | Description |
 |------|-------------|
-| `NexusAI-Setup-1.0.0.exe` | Windows NSIS installer (~87 MB) |
-| `NexusAI-Portable-1.0.0.exe` | Portable Windows app (~87 MB) |
+| `NexusAI-Setup-1.0.0.exe` | Windows NSIS installer (~97 MB) |
+| `NexusAI-Portable-1.0.0.exe` | Portable Windows app (~96 MB) |
 
 ---
 

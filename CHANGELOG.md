@@ -19,17 +19,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Electron desktop application with embedded server
 - Windows NSIS installer and portable executable
 - Native desktop notifications
-- Verification scripts for phases 1–8
+- Verification scripts for phases 1–8 and 10
 
 ### Changed
 - Replaced localStorage-only prototype auth with production JWT + database flow
-- Modular CSS architecture (12 style parts) with cosmic crimson design system
-- Electron packaged static root uses `app.getAppPath()` for `app.asar` support
+- Premium light mode UI (default) with accessibility contrast pass across all pages; optional dark mode
+- Electron userData stores SQLite at `%APPDATA%\nexusai\nexusai.db`
+- README and release screenshots updated to light mode with demo user Lahari
 
 ### Fixed
 - Windows electron-builder code-sign symlink extraction failure
 - Packaged application resource path resolution
 - Logo SVG invalid character encoding in export pipeline
+- Session token UNIQUE constraint on consecutive logins
+- Notifications module parse error blocking dashboard scripts
+- Phase 11 stabilization: navigation, persistence, responsive layout
 
 ### Known limitations
 - Windows desktop only; no macOS/Linux installer in v1.0.0

@@ -12,8 +12,8 @@ Use these materials for resumes, LinkedIn, interviews, and technical blogs.
 - Delivered **interview preparation suite** with mock, technical, system design, and AI tracks plus speech evaluation API for spoken response scoring.
 - Integrated **resume analyzer and job-tailoring engine**, GitHub project connectivity, and career roadmap builder with achievement tracking.
 - Published **OpenAPI 3 documentation** with Swagger UI; created Playwright-based verification scripts covering backend, desktop, and release pipelines.
-- Packaged **Windows desktop release** (NSIS installer + portable `.exe`, ~87 MB) with embedded server, native notifications, and per-user SQLite storage at `%APPDATA%\nexusai\data`.
-- Designed official **NexusAI brand system** (circuit-style logo, SVG/PNG/ICO/ICNS pipeline) and cosmic burgundy glassmorphism UI with responsive dashboard shell.
+- Packaged **Windows desktop release** (NSIS installer + portable `.exe`, ~97 MB) with embedded server, native notifications, and per-user SQLite storage at `%APPDATA%\nexusai\nexusai.db`.
+- Designed official **NexusAI brand system** (circuit-style logo, SVG/PNG/ICO/ICNS pipeline) and premium **light mode** glass UI with pastel palette and accessibility-focused contrast.
 
 ---
 

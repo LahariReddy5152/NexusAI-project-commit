@@ -17,7 +17,7 @@
 
 ## Overview
 
-**NexusAI** is a full-stack AI engineer learning platform that combines structured curricula, hands-on projects, interview preparation, career tooling, and an integrated Virtual Recruiter — all wrapped in a cosmic burgundy design system with optional Electron desktop delivery.
+**NexusAI** is a full-stack AI engineer learning platform that combines structured curricula, hands-on projects, interview preparation, career tooling, and an integrated Virtual Recruiter — with a premium **light mode** glass UI (optional dark mode) and optional Electron desktop delivery.
 
 Whether you are breaking into AI engineering or leveling up for your next role, NexusAI provides a single workspace to study, build portfolio projects, practice interviews, analyze resumes, and get AI-powered mentorship.
 
@@ -52,10 +52,10 @@ Whether you are breaking into AI engineering or leveling up for your next role, 
 
 ### Platform
 - JWT authentication with signup, login, remember me, and password reset
-- SQLite persistence with user profiles, progress, and notifications
+- SQLite persistence with user profiles, progress, dashboard stats, projects, interview scores, and settings
 - Native desktop notifications via Electron
-- Responsive glassmorphism UI with galaxy backgrounds
-- Official NexusAI logo system (SVG, PNG, ICO, ICNS, favicon)
+- Responsive glassmorphism UI with light default theme and static dashboard background
+- Official NexusAI logo system (SVG source + generated ICO/PNG/ICNS in `build/`)
 
 ---
 
@@ -126,6 +126,12 @@ flowchart TB
 |:-----------------:|:-----------------:|
 | ![Virtual Recruiter](docs/screenshots/07-virtual-recruiter.png) | ![Installer](docs/screenshots/08-desktop-installer.png) |
 
+| Profile | Code Lab | Python Workspace |
+|:-------:|:--------:|:----------------:|
+| ![Profile](docs/screenshots/09-profile.png) | ![Code Lab](docs/screenshots/10-code-lab.png) | ![Python workspace](docs/screenshots/11-python-workspace.png) |
+
+_All screenshots show the default **light mode** UI with demo user **Lahari** (`laharireddy5152@gmail.com`)._
+
 ---
 
 ## Installation
@@ -153,8 +159,8 @@ Open **http://localhost:5000** in your browser.
 |----------|-------------|---------|
 | `PORT` | HTTP server port | `5000` |
 | `OPENAI_API_KEY` | Live OpenAI responses (optional) | Rule-based fallback |
-| `NEXUSAI_DATA_DIR` | SQLite data directory | `./data` (web) or `%APPDATA%/nexusai/data` (desktop) |
-| `JWT_SECRET` | Token signing secret | Auto-generated in dev |
+| `NEXUSAI_DATA_DIR` | SQLite data directory | `./data` (web) or `%APPDATA%/nexusai` (desktop) |
+| `JWT_SECRET` | Token signing secret | Dev fallback string (set in production) |
 
 Create a `.env` file in the project root (not committed):
 
@@ -206,8 +212,8 @@ The installer provides:
 
 | Item | Windows path |
 |------|----------------|
-| **App data** | `%APPDATA%\nexusai\data` |
-| **Database** | `%APPDATA%\nexusai\data\nexusai.db` |
+| **App data** | `%APPDATA%\nexusai` |
+| **Database** | `%APPDATA%\nexusai\nexusai.db` |
 
 ---
 
@@ -216,7 +222,7 @@ The installer provides:
 | Category | Stack |
 |----------|-------|
 | **Frontend** | HTML5, CSS3 (modular), vanilla JavaScript (ES modules) |
-| **3D / visuals** | Three.js galaxy engine, glassmorphism, cosmic crimson theme |
+| **3D / visuals** | Three.js (login), static dashboard background, glassmorphism, light/dark themes |
 | **Backend** | Node.js, Express 5, `node:sqlite` |
 | **Auth** | JWT, bcryptjs |
 | **AI** | OpenAI API (optional) with rule-based fallback |
@@ -233,8 +239,8 @@ The installer provides:
 NexusAI-project-commit/
 ├── assets/
 │   ├── images/              # Backgrounds and marketing art
-│   └── logo/                # Official logo SVG, PNG, ICO, ICNS, favicon
-├── build/                   # Electron build resources (icon.ico, icon.png)
+│   └── logo/                # Official logo SVGs (+ run npm run generate:logo for PNG/ICO)
+├── build/                   # Electron icons (icon.ico, icon.png, icon.icns)
 ├── dist/                    # Production installers (generated)
 ├── electron/
 │   ├── main.js              # Desktop entry, embedded server, window
@@ -288,6 +294,7 @@ npm run generate:logo
 node scripts/verify-phase6.mjs   # Backend integrations
 node scripts/verify-phase7.mjs   # Electron desktop
 node scripts/verify-phase8.mjs   # Production Windows release
+node scripts/verify-phase10.mjs  # End-to-end validation
 ```
 
 ### API documentation
@@ -310,7 +317,9 @@ With the server running, open:
 | `POST` | `/api/resume/tailor` | Job-specific resume tailoring |
 | `POST` | `/api/github/connect` | Link GitHub username |
 | `POST` | `/api/speech/evaluate` | Interview speech analysis |
+| `GET` | `/api/dashboard/stats` | Dashboard statistics (XP, streak, hours, progress) |
 | `GET` | `/api/progress/courses` | Learning progress |
+| `GET` | `/api/progress/projects` | Project progress |
 | `GET` | `/api/notifications` | User notifications |
 
 All protected routes require `Authorization: Bearer <token>`.

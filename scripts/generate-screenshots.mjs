@@ -1,5 +1,5 @@
 /**
- * Generate portfolio and README screenshots for NexusAI v1.0.0
+ * Generate portfolio and README screenshots for NexusAI v1.0.0 (light mode)
  */
 import { chromium } from "playwright";
 import fs from "fs";
@@ -8,25 +8,28 @@ import { startServer } from "../server/start.js";
 
 const OUT = path.join("docs", "screenshots");
 const VIEWPORT = { width: 1440, height: 900 };
+const DEMO_USER = {
+  name: "Lahari",
+  email: "laharireddy5152@gmail.com",
+  password: "Screenshot123!"
+};
 
 async function seedUser(port) {
-  const email = `screenshot-${Date.now()}@nexusai.dev`;
-  const password = "Screenshot123!";
   const base = `http://127.0.0.1:${port}`;
 
   await fetch(`${base}/api/auth/signup`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name: "Alex Chen", email, password })
-  });
+    body: JSON.stringify({ name: DEMO_USER.name, email: DEMO_USER.email, password: DEMO_USER.password })
+  }).catch(() => {});
 
   const login = await fetch(`${base}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password, rememberMe: true })
+    body: JSON.stringify({ email: DEMO_USER.email, password: DEMO_USER.password, rememberMe: true })
   });
   const data = await login.json();
-  return { token: data.token, email, name: "Alex Chen" };
+  return { token: data.token, email: DEMO_USER.email, name: DEMO_USER.name };
 }
 
 async function capture(page, filePath) {
@@ -41,8 +44,23 @@ async function showSection(page, sectionId) {
     const target = document.getElementById(id);
     if (target) target.classList.remove("hidden");
     document.querySelectorAll(".nav-btn").forEach((btn) => btn.classList.remove("active"));
+    const nav = document.querySelector(`[data-section="${id}"]`);
+    if (nav) nav.classList.add("active");
   }, sectionId);
   await page.waitForTimeout(600);
+}
+
+async function forceLightTheme(page) {
+  await page.evaluate(() => {
+    document.body.classList.remove("theme-dark");
+    document.body.classList.add("light-mode");
+    localStorage.setItem("nexusTheme", "light");
+    const logo = document.querySelector(".nexusai-logo--sidebar");
+    if (logo) logo.src = "assets/logo/nexusai-wordmark-light.svg";
+    document.querySelectorAll("[data-theme-btn]").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.themeBtn === "light");
+    });
+  });
 }
 
 async function main() {
@@ -65,6 +83,7 @@ async function main() {
     localStorage.setItem("nexusToken", token);
     localStorage.setItem("isLoggedIn", "true");
     localStorage.setItem("userRole", "user");
+    localStorage.setItem("nexusTheme", "light");
     localStorage.setItem("nexusUser", JSON.stringify({
       name,
       email,
@@ -75,6 +94,7 @@ async function main() {
   }, { token: user.token, email: user.email, name: user.name });
 
   await page.goto(`${base}/dashboard.html`, { waitUntil: "networkidle", timeout: 60000 });
+  await forceLightTheme(page);
   await page.waitForTimeout(1500);
 
   const shots = [
@@ -82,15 +102,29 @@ async function main() {
     ["03-learn.png", "learnSection"],
     ["04-projects.png", "realProjectsSection"],
     ["05-interview-prep.png", "interviewSection"],
-    ["06-career.png", "jobModeSection"]
+    ["06-career.png", "jobModeSection"],
+    ["09-profile.png", "profileSection"],
+    ["10-code-lab.png", "codingLabSection"]
   ];
 
   for (const [file, section] of shots) {
     await showSection(page, section);
+    await forceLightTheme(page);
     await capture(page, path.join(OUT, file));
   }
 
+  await showSection(page, "learnSection");
+  await forceLightTheme(page);
+  await page.evaluate(() => {
+    if (typeof window.openLearnWorkspace === "function") {
+      window.openLearnWorkspace("python-fundamentals", 0);
+    }
+  });
+  await page.waitForTimeout(1000);
+  await capture(page, path.join(OUT, "11-python-workspace.png"));
+
   await showSection(page, "dashboardSection");
+  await forceLightTheme(page);
   await page.evaluate(() => {
     const panel = document.getElementById("chatbotBox");
     const shell = document.getElementById("globalRecruiterShell");
@@ -106,21 +140,21 @@ async function main() {
 <html><head><meta charset="utf-8"><title>NexusAI Installer</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:"Segoe UI",sans-serif;background:linear-gradient(135deg,#1a0508,#2a0812);min-height:100vh;display:flex;align-items:center;justify-content:center;color:#fdf2f8}
-  .card{background:rgba(20,4,10,.92);border:1px solid rgba(199,123,127,.35);border-radius:20px;padding:40px 48px;width:520px;box-shadow:0 24px 64px rgba(74,0,18,.6)}
-  .logo{font-size:28px;font-weight:700;letter-spacing:2px;margin-bottom:8px}
-  .logo span{color:#38bdf8}
-  .tag{color:#d4a0a8;font-size:12px;letter-spacing:4px;margin-bottom:28px}
-  h2{font-size:18px;margin-bottom:16px}
-  .bar{height:8px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin:20px 0}
+  body{font-family:"Segoe UI",sans-serif;background:linear-gradient(135deg,#fff5f7,#fae8ff,#e0f2fe);min-height:100vh;display:flex;align-items:center;justify-content:center;color:#0f172a}
+  .card{background:rgba(255,255,255,.94);border:1px solid rgba(244,114,182,.25);border-radius:20px;padding:40px 48px;width:520px;box-shadow:0 24px 64px rgba(148,163,184,.22)}
+  .logo{font-size:28px;font-weight:700;letter-spacing:2px;margin-bottom:8px;color:#0f172a}
+  .logo span{color:#0284c7}
+  .tag{color:#64748b;font-size:12px;letter-spacing:4px;margin-bottom:28px}
+  h2{font-size:18px;margin-bottom:16px;color:#0f172a}
+  .bar{height:8px;background:rgba(148,163,184,.2);border-radius:99px;overflow:hidden;margin:20px 0}
   .fill{height:100%;width:72%;background:linear-gradient(90deg,#fb7185,#c084fc,#38bdf8)}
-  ul{list-style:none;font-size:14px;color:#e8a0a8;line-height:2}
-  .btn{display:inline-block;margin-top:24px;padding:12px 28px;border-radius:10px;background:linear-gradient(135deg,#be123c,#6b21a8);color:#fff;font-weight:600}
+  ul{list-style:none;font-size:14px;color:#334155;line-height:2}
+  .btn{display:inline-block;margin-top:24px;padding:12px 28px;border-radius:10px;background:linear-gradient(135deg,#fb7185,#c084fc,#38bdf8);color:#fff;font-weight:600}
 </style></head>
 <body><div class="card">
   <div class="logo">NEXUS<span>AI</span></div>
   <div class="tag">LEARN · BUILD · GROW</div>
-  <h2>Installing NexusAI 1.0.0</h2>
+  <h2>Installing NexusAI 1.0.0 for Lahari</h2>
   <div class="bar"><div class="fill"></div></div>
   <ul>
     <li>✓ Desktop shortcut</li>
