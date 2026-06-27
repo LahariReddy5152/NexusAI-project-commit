@@ -1,7 +1,7 @@
 /** Real Projects — grid catalog, detail view, GitHub */
 import { showSection } from "../app/app-navigation.js";
 import { getProjectBlueprint, renderProjectDetail, CORE_PROJECT_NAMES, LIVE_PROJECT_NAMES } from "./projects-data.js";
-import { getProjectMeta, getProjectStatus } from "./project-meta.js";
+import { getProjectMeta, getProjectStatus, getEstimatedCompletion } from "./project-meta.js";
 import {
   CHECKPOINT_LABELS,
   MILESTONE_LABELS,
@@ -33,6 +33,7 @@ function renderProjectCard(name, isLive = false) {
   const level = bp?.level || "Intermediate";
   const fn = isLive ? `startLiveProject('${name.replace(/'/g, "\\'")}')` : `startCoreProject('${name.replace(/'/g, "\\'")}')`;
 
+  const est = getEstimatedCompletion(name, progress);
   return `<div class="project-card-v2 glass-card" onclick="${fn}">
     <div class="project-card-top">
       <span class="project-icon" aria-hidden="true">${meta.icon}</span>
@@ -45,6 +46,7 @@ function renderProjectCard(name, isLive = false) {
       <span class="project-pct">${progress}%</span>
       <div class="glass-progress project-card-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
     </div>
+    <p class="project-est-date">Est. completion: ${est}</p>
   </div>`;
 }
 

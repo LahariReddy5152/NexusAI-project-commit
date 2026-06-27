@@ -1,4 +1,6 @@
-/** Per-project progress, score, notes, checkpoints, milestones — isolated localStorage keys */
+/** Per-project progress, score, notes, checkpoints, milestones — synced to SQLite when logged in */
+
+import { getToken } from "../shared/api-client.js";
 
 export const CHECKPOINT_LABELS = [
   "Planning & requirements sign-off",
@@ -68,12 +70,21 @@ export function loadMilestones(name) {
   return MILESTONE_LABELS.map(() => false);
 }
 
+function scheduleProjectSync(name) {
+  if (!getToken() || !name) return;
+  import("./project-sync.js")
+    .then(({ pushProjectToServer }) => pushProjectToServer(name))
+    .catch(() => {});
+}
+
 export function saveCheckpoints(name, states) {
   localStorage.setItem(getProjectCheckpointsKey(name), JSON.stringify(states));
+  scheduleProjectSync(name);
 }
 
 export function saveMilestones(name, states) {
   localStorage.setItem(getProjectMilestonesKey(name), JSON.stringify(states));
+  scheduleProjectSync(name);
 }
 
 export function calcProgressFromCheckpoints(states) {
@@ -87,7 +98,9 @@ export function loadProjectProgress(name) {
 }
 
 export function saveProjectProgress(name, percent) {
-  localStorage.setItem(getProjectProgressKey(name), String(percent));
+  const clamped = Math.max(0, Math.min(100, Number(percent) || 0));
+  localStorage.setItem(getProjectProgressKey(name), String(clamped));
+  scheduleProjectSync(name);
 }
 
 export function loadProjectScore(name) {
@@ -98,6 +111,7 @@ export function loadProjectScore(name) {
 export function saveProjectScore(name, score) {
   const clamped = Math.max(0, Math.min(100, Number(score) || 0));
   localStorage.setItem(getProjectScoreKey(name), String(clamped));
+  scheduleProjectSync(name);
   return clamped;
 }
 
@@ -107,6 +121,7 @@ export function loadProjectNotes(name) {
 
 export function saveProjectNotes(name, text) {
   localStorage.setItem(getProjectNotesKey(name), text);
+  scheduleProjectSync(name);
 }
 
 export function loadProjectMinutes(name) {
@@ -114,7 +129,8 @@ export function loadProjectMinutes(name) {
 }
 
 export function saveProjectMinutes(name, minutes) {
-  localStorage.setItem(getProjectMinutesKey(name), String(minutes));
+  localStorage.setItem(getProjectMinutesKey(name), String(Math.max(0, Number(minutes) || 0)));
+  scheduleProjectSync(name);
 }
 
 export function loadProjectState(name) {

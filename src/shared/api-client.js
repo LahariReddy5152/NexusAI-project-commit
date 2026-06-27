@@ -19,6 +19,7 @@ export function clearSession() {
   localStorage.removeItem("isLoggedIn");
   localStorage.removeItem("userRole");
   localStorage.removeItem("nexusRememberMe");
+  localStorage.removeItem("nexusDashboardStats");
 }
 
 export async function api(path, options = {}) {
@@ -80,8 +81,39 @@ export async function syncUserData() {
   if (!ok) return false;
 
   const user = { ...data.user, ...(data.profile || {}) };
+  if (data.stats) {
+    user.progress = {
+      points: data.stats.totalXp || 0,
+      streak: data.stats.dayStreak || 0,
+      hours: data.stats.hoursLearned || 0
+    };
+    const { applyStatsToLocal, pullDashboardStats } = await import("../dashboard/dashboard-stats-store.js");
+    applyStatsToLocal(data.stats);
+    await pullDashboardStats();
+  }
   localStorage.setItem("nexusUser", JSON.stringify(user));
   localStorage.setItem("userRole", user.role || "user");
+
+  const { syncProjectsFromServer } = await import("../projects/project-sync.js");
+  await syncProjectsFromServer();
+
+  const { hydrateInterviewFromServer } = await import("../interview/interview-progress.js");
+  const interview = await api("/progress/interview");
+  if (interview.ok && interview.data.state) {
+    hydrateInterviewFromServer(interview.data.state);
+  }
+
+  const { loadRemoteState } = await import("./user-persistence.js");
+  const learnSession = await loadRemoteState("learn_session", null);
+  if (learnSession?.pathId) {
+    localStorage.setItem("nexusCurrentPath", learnSession.pathId);
+    if (typeof learnSession.index === "number") {
+      localStorage.setItem("nexusLastLesson", JSON.stringify(learnSession));
+    }
+  }
+
+  const { loadCodeLabFromServer } = await import("../coding-lab/coding-lab.js");
+  await loadCodeLabFromServer();
 
   const notif = await api("/notifications");
   if (notif.ok) {
@@ -91,14 +123,6 @@ export async function syncUserData() {
   const achievements = await api("/achievements");
   if (achievements.ok) {
     localStorage.setItem("nexusAchievementsSummary", JSON.stringify(achievements.data.summary || {}));
-  }
-
-  const interview = await api("/progress/interview");
-  if (interview.ok && interview.data.state) {
-    Object.entries(interview.data.state).forEach(([key, val]) => {
-      if (typeof val === "string") localStorage.setItem(key, val);
-      else localStorage.setItem(key, JSON.stringify(val));
-    });
   }
 
   return true;

@@ -16,6 +16,8 @@ import {
   getTechIconForGroup
 } from "./learn-technologies.js";
 import { getTechIcon, getStatusIcon } from "../shared/tech-icons.js";
+import { saveRemoteStateDebounced } from "../shared/user-persistence.js";
+import { getToken } from "../shared/api-client.js";
 import {
   currentPathId,
   currentLessonIndex,
@@ -39,6 +41,58 @@ const WORKSPACE_EXTRAS = [
 
 let activeTechId = null;
 let activeExtraId = null;
+let learnSearchQuery = "";
+let learnActiveFilter = "all";
+
+export const LEARN_FEATURED_FILTERS = [
+  { id: "all", label: "All" },
+  { id: "python", label: "Python" },
+  { id: "java", label: "Java" },
+  { id: "javascript", label: "JavaScript" },
+  { id: "react", label: "React" },
+  { id: "spring-boot", label: "Spring Boot" },
+  { id: "sql", label: "SQL" },
+  { id: "ai", label: "Machine Learning" },
+  { id: "rag", label: "Generative AI" },
+  { id: "prompt-engineering", label: "Prompt Engineering" },
+  { id: "system-design", label: "System Design" }
+];
+
+function filterTechnologyGroups(groups) {
+  let list = groups;
+  if (learnActiveFilter !== "all") {
+    list = list.filter((t) => t.id === learnActiveFilter);
+  }
+  if (learnSearchQuery.trim()) {
+    const q = learnSearchQuery.trim().toLowerCase();
+    list = list.filter((t) => t.name.toLowerCase().includes(q) || t.id.includes(q));
+  }
+  return list;
+}
+
+export function setLearnSearch(query) {
+  learnSearchQuery = query;
+  renderTechnologyCatalog();
+}
+
+export function setLearnFilter(filterId) {
+  learnActiveFilter = filterId;
+  document.querySelectorAll(".learn-filter-chip").forEach((chip) => {
+    chip.classList.toggle("active", chip.dataset.filter === filterId);
+  });
+  renderTechnologyCatalog();
+}
+
+export function initLearnToolbar() {
+  const search = document.getElementById("learnSearchInput");
+  const chips = document.getElementById("learnFilterChips");
+  search?.addEventListener("input", (e) => setLearnSearch(e.target.value));
+  if (chips && !chips.innerHTML) {
+    chips.innerHTML = LEARN_FEATURED_FILTERS.map(
+      (f) => `<button type="button" class="learn-filter-chip${f.id === "all" ? " active" : ""}" data-filter="${f.id}" onclick="setLearnFilter('${f.id}')">${f.label}</button>`
+    ).join("");
+  }
+}
 
 function loadCompletedForPath(pathId) {
   try {
@@ -67,26 +121,48 @@ export function renderTechnologyCatalog() {
   if (!grid) return;
   showView("learnCatalogView");
   breadcrumbForCatalog();
-  grid.innerHTML = TECHNOLOGY_GROUPS.map((tech) => {
+  initLearnToolbar();
+  const groups = filterTechnologyGroups(TECHNOLOGY_GROUPS);
+  if (!groups.length) {
+    grid.innerHTML = `<p class="muted-text">No courses match your search. Try another filter.</p>`;
+    return;
+  }
+  grid.innerHTML = groups.map((tech) => {
     const progress = getAggregateProgress(tech.paths);
     const levelLabel = getPrimaryLevel(tech.paths);
     const beginnerPath = LEARNING_PATHS.find((p) => p.id === tech.paths[0]);
     const unlocked = beginnerPath ? isPathUnlocked(beginnerPath) : true;
     const icon = getTechIconForGroup(tech.id);
     const status = getStatusIcon(progress, unlocked);
-    return `<div class="course-catalog-card glass-card tech-card" onclick="openTechnology('${tech.id}')">
+    const pathId = tech.paths[0];
+    return `<div class="course-catalog-card glass-card tech-card" data-tech-id="${tech.id}" role="button" tabindex="0">
       <div class="course-card-header">
         <span class="tech-logo">${icon}</span>
         <span class="status-icon">${status}</span>
       </div>
       <h3>${tech.name}</h3>
       <span class="level-badge level-beginner">${levelLabel}</span>
+      <div class="glass-progress catalog-progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
       <div class="course-catalog-meta">
         <span>${tech.paths.length} level${tech.paths.length > 1 ? "s" : ""}</span>
         <span class="course-pct">${progress}% complete</span>
       </div>
+      <button type="button" class="glass-btn course-continue-btn" onclick="event.stopPropagation(); ${unlocked ? `openCourse('${pathId}')` : `openTechnology('${tech.id}')`}">${progress > 0 ? "Continue Learning →" : "Start Course →"}</button>
     </div>`;
   }).join("");
+  grid.querySelectorAll(".course-catalog-card").forEach((card) => {
+    const techId = card.dataset.techId;
+    card.addEventListener("click", (e) => {
+      if (e.target.closest("button")) return;
+      openTechnology(techId);
+    });
+    card.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openTechnology(techId);
+      }
+    });
+  });
 }
 
 export function openTechnology(techId) {
@@ -187,7 +263,12 @@ export function openWorkspaceLesson(index) {
 
   activeExtraId = null;
   setCurrentLessonIndex(index);
-  localStorage.setItem("nexusLastLesson", JSON.stringify({ pathId: currentPathId, index }));
+  const session = { pathId: currentPathId, index };
+  localStorage.setItem("nexusLastLesson", JSON.stringify(session));
+  localStorage.setItem("nexusCurrentPath", currentPathId);
+  if (getToken()) {
+    saveRemoteStateDebounced("learn_session", session);
+  }
 
   breadcrumbForLesson(currentPathId, module.title);
   renderWorkspaceSidebar(currentPathId);

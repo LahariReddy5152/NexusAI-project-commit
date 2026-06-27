@@ -2,8 +2,10 @@ import { getCurriculumForPath } from "./learn-data.js";
 import { currentPathId, currentLessonIndex, completedLessons } from "./learn-state.js";
 import { renderCodeBlock } from "./learn-code.js";
 import { saveCompletedLessons, getActiveCurriculum, updateLearningPathProgress } from "./learn-navigation.js";
-import { logActivity, awardPoints } from "../dashboard/dashboard-activity.js";
+import { logActivity } from "../dashboard/dashboard-activity.js";
 import { syncDashboardFromProgress, recordLessonToday } from "../dashboard/dashboard-sync.js";
+import { recordLessonCompleteOnServer } from "../dashboard/dashboard-stats-store.js";
+import { getToken } from "../shared/api-client.js";
 
 export function openLesson(index) {
   if (typeof window.openWorkspaceLesson === "function") {
@@ -141,13 +143,24 @@ export function markLessonComplete() {
     saveCompletedLessons();
     recordLessonToday();
     const pointsEarned = 50;
-    awardPoints(pointsEarned);
     updateMarkCompleteButton();
     updateLearningPathProgress();
     if (typeof window.renderWorkspaceSidebar === "function") window.renderWorkspaceSidebar(currentPathId);
     if (typeof window.renderWorkspaceChrome === "function") window.renderWorkspaceChrome(currentPathId);
-    syncDashboardFromProgress();
-    const mod = getActiveCurriculum()[currentLessonIndex];
+
+    const curriculum = getActiveCurriculum();
+    const syncPromise = getToken()
+      ? recordLessonCompleteOnServer(currentPathId, [...completedLessons], curriculum.length, pointsEarned)
+      : Promise.resolve(null);
+
+    syncPromise
+      .then(() => {
+        syncDashboardFromProgress();
+        window.dispatchEvent(new CustomEvent("nexusDashboardUpdate"));
+      })
+      .catch(() => syncDashboardFromProgress());
+
+    const mod = curriculum[currentLessonIndex];
     logActivity(`Completed: ${mod?.title || "lesson"} (+${pointsEarned} XP)`);
   }
 }

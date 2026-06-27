@@ -788,19 +788,6 @@ export function saveInterviewScore() {
     topic: activeTopic
   });
 
-  if (getToken()) {
-    saveInterviewProgress(
-      {
-        [`interviewProgress_${activeSection}`]: loadSectionProgress(activeSection),
-        [`interviewScores_${activeSection}`]: JSON.parse(localStorage.getItem(`interviewScores_${activeSection}`) || "[]")
-      },
-      activeSection,
-      { score, questionId: activeQuestionId, topic: activeTopic }
-    );
-  }
-
-
-
   const progress = loadSectionProgress(activeSection);
 
   if (statusEl) {

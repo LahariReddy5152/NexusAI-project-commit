@@ -6,7 +6,6 @@ import { refreshAdminPanel } from "../admin/admin-panel.js";
 import { syncProfilePage } from "../profile/profile-ui.js";
 import { initTheme } from "../settings/settings-ui.js";
 import { restoreRecruiterHistory, clearRecruiterHistory } from "../virtual-recruiter/vr-chat.js";
-
 import * as AppNav from "../app/app-navigation.js";
 import * as AppPlatform from "../app/app-platform.js";
 import * as CodingLab from "../coding-lab/coding-lab.js";
@@ -25,13 +24,13 @@ import { LEARNING_PATHS } from "../learn/learn-data.js";
 import { isPathUnlocked } from "../learn/learn-progression.js";
 import * as DashboardSync from "../dashboard/dashboard-sync.js";
 import * as DashboardGreeting from "../dashboard/dashboard-greeting.js";
+import { pullDashboardStats } from "../dashboard/dashboard-stats-store.js";
 import * as Notifications from "../notifications/notifications.js";
 import * as Settings from "../settings/settings-ui.js";
 import * as VrChat from "../virtual-recruiter/vr-chat.js";
 import * as VrUi from "../virtual-recruiter/vr-ui.js";
-
-enforceAuth();
-initTheme();
+import { initNavigation, setActiveNav, navigateTo } from "../ui/navigation-routes.js";
+import { renderCareerHubCards, renderInterviewHubCards, openInterviewHubTrack } from "../ui/hub-sections.js";
 
 const globals = {
   ...AppNav,
@@ -53,7 +52,10 @@ const globals = {
   ...Notifications,
   ...Settings,
   ...VrChat,
-  ...VrUi
+  ...VrUi,
+  setActiveNav,
+  navigateTo,
+  openInterviewHubTrack
 };
 
 Object.entries(globals).forEach(([name, fn]) => {
@@ -63,6 +65,7 @@ Object.entries(globals).forEach(([name, fn]) => {
 window.LEARNING_PATHS = LEARNING_PATHS;
 window.isPathUnlocked = isPathUnlocked;
 window.buildPlacementAssessment = LearnAssessment.buildPlacementAssessment;
+window.setLearnFilter = LearnWorkspace.setLearnFilter;
 
 const baseShowSection = window.showSection;
 window.showSection = function (id) {
@@ -71,24 +74,54 @@ window.showSection = function (id) {
   if (id === "profileSection") syncProfilePage();
   if (id === "adminSection") refreshAdminPanel();
   if (id === "realProjectsSection") Projects.renderProjectsGrid?.();
-  if (id === "jobModeSection") Career.showCareerPanel?.("resume");
+  if (id === "jobModeSection") {
+    Career.showCareerPanel?.("resume");
+    renderCareerHubCards();
+  }
   if (id === "interviewSection") {
+    renderInterviewHubCards();
     if (typeof window.initInterviewSection === "function") window.initInterviewSection();
   }
+  if (id === "codingLabSection") CodingLab.initCodeLab?.();
+  if (id === "learnSection") LearnWorkspace.initLearnToolbar?.();
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  initAppPlatform();
-  LearnNav.initializeLearningPortal();
-  Projects.renderProjectsGrid?.();
-  DashboardSync.syncDashboardFromProgress();
-  DashboardGreeting.startGreetingClock();
-  Notifications.initNotifications();
-  VrUi.renderMentorModeOptions();
-  VrUi.renderVirtualRecruiterGreeting();
-  restoreRecruiterHistory();
-  VrUi.renderRecruiterClock();
-  setInterval(() => {
+async function bootDashboard() {
+  await enforceAuth();
+  await initTheme();
+
+  function onReady() {
+    initNavigation();
+    initAppPlatform();
+    LearnNav.initializeLearningPortal();
+    Projects.renderProjectsGrid?.();
+    DashboardSync.syncDashboardFromProgress();
+    pullDashboardStats()
+      .then(() => DashboardSync.syncDashboardFromProgress())
+      .catch(() => {});
+    window.addEventListener("nexusDashboardUpdate", () => DashboardSync.syncDashboardFromProgress());
+    window.addEventListener("nexusUserSynced", () => DashboardSync.syncDashboardFromProgress());
+    DashboardGreeting.startGreetingClock();
+    Notifications.initNotifications();
+    VrUi.renderMentorModeOptions();
+    VrUi.renderVirtualRecruiterGreeting();
+    restoreRecruiterHistory();
     VrUi.renderRecruiterClock();
-  }, 30000);
+    renderCareerHubCards();
+    renderInterviewHubCards();
+    CodingLab.initCodeLab?.();
+    setInterval(() => {
+      VrUi.renderRecruiterClock();
+    }, 30000);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", onReady);
+  } else {
+    onReady();
+  }
+}
+
+bootDashboard().catch(() => {
+  window.location.href = "index.html";
 });

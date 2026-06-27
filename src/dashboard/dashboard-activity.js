@@ -1,14 +1,25 @@
 import { LEARNING_PATHS, getCurriculumForPath } from "../learn/learn-data.js";
+import { getToken } from "../shared/api-client.js";
+import { awardPointsOnServer } from "./dashboard-stats-store.js";
 
 export function awardPoints(points) {
-    try {
-        const user = JSON.parse(localStorage.getItem("nexusUser"));
-        if (user) {
-            if (!user.progress) user.progress = {};
-            user.progress.points = (user.progress.points || 0) + points;
-            localStorage.setItem("nexusUser", JSON.stringify(user));
-        }
-    } catch (e) { console.error("Failed to award points:", e); }
+  const amount = Math.max(0, Number(points) || 0);
+  if (!amount) return;
+
+  try {
+    const user = JSON.parse(localStorage.getItem("nexusUser") || "null");
+    if (user) {
+      if (!user.progress) user.progress = {};
+      user.progress.points = Math.max(0, (user.progress.points || 0) + amount);
+      localStorage.setItem("nexusUser", JSON.stringify(user));
+    }
+  } catch (e) {
+    console.error("Failed to award points:", e);
+  }
+
+  if (getToken()) {
+    awardPointsOnServer(amount).catch(() => {});
+  }
 }
 
 export function logActivity(text) {

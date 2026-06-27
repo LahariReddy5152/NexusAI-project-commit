@@ -6,8 +6,15 @@ export function showSection(id) {
     section.classList.add("hidden");
   });
   const target = document.getElementById(id);
-  if (!target) return;
+  if (!target) {
+    console.warn("Section not found:", id);
+    return;
+  }
   target.classList.remove("hidden");
+
+  if (typeof window.setActiveNav === "function") {
+    window.setActiveNav(id);
+  }
 
   if (id !== "learnSection") {
     document.getElementById("lessonView")?.classList.add("hidden");

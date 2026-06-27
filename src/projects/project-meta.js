@@ -15,10 +15,17 @@ export const PROJECT_CARD_META = {
 };
 
 export function getProjectStatus(progress) {
-  if (progress >= 100) return { label: "Complete", class: "status-complete" };
-  if (progress >= 80) return { label: "Portfolio Ready", class: "status-ready" };
+  if (progress >= 100) return { label: "Completed", class: "status-complete" };
   if (progress > 0) return { label: "In Progress", class: "status-progress" };
-  return { label: "Not Started", class: "status-new" };
+  return { label: "Planned", class: "status-planned" };
+}
+
+export function getEstimatedCompletion(name, progress) {
+  if (progress >= 100) return "Completed";
+  const days = Math.max(7, Math.round((100 - progress) * 0.5));
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
 }
 
 export function getProjectMeta(name) {

@@ -1,6 +1,7 @@
 import { LEARNING_PATHS, getCurriculumForPath, getPathProgressPercent } from "../learn/learn-data.js";
 import { updateEl } from "../shared/helpers.js";
 import { getOverallProgress } from "./dashboard-activity.js";
+import { getCachedStats } from "./dashboard-stats-store.js";
 import { showSection } from "../app/app-navigation.js";
 import { openCourse } from "../learn/learn-navigation.js";
 import { isPathUnlocked, getProgressionMeta } from "../learn/learn-progression.js";
@@ -20,13 +21,18 @@ export function recordLessonToday() {
 }
 
 export function getHoursLearned() {
+  const cached = getCachedStats();
+  if (cached && typeof cached.hoursLearned === "number") {
+    return Math.max(0, cached.hoursLearned);
+  }
+
   let minutes = Number(localStorage.getItem("projectMinutes") || 0);
   LEARNING_PATHS.forEach((p) => {
     const done = JSON.parse(localStorage.getItem(`nexusCompleted_${p.id}`) || "[]").length;
     minutes += done * 18;
   });
   const hours = Math.round((minutes / 60) * 10) / 10;
-  return hours < 0.5 ? 0.5 : hours;
+  return Math.max(0, hours);
 }
 
 export function getNextLessonInfo() {
@@ -97,15 +103,21 @@ export function renderLearningRecommendations() {
 
 export function syncDashboardFromProgress() {
   const user = JSON.parse(localStorage.getItem("nexusUser") || "{}");
-  const streak = user.progress?.streak || Math.max(1, Math.floor(getOverallProgress() / 5));
-  updateEl("streak", streak);
-  updateEl("points", user.progress?.points || 0);
-  updateEl("hoursLearned", getHoursLearned());
-  updateEl("overallProgressPct", `${getOverallProgress()}%`);
+  const cached = getCachedStats();
 
-  const pathId = localStorage.getItem("nexusCurrentPath") || "python-fundamentals";
+  const overall = cached?.overallProgress ?? getOverallProgress();
+  const streak = Math.max(0, cached?.dayStreak ?? user.progress?.streak ?? 0);
+  const points = Math.max(0, cached?.totalXp ?? user.progress?.points ?? 0);
+  const hours = getHoursLearned();
+
+  updateEl("streak", streak);
+  updateEl("points", points);
+  updateEl("hoursLearned", hours);
+  updateEl("overallProgressPct", `${Math.max(0, Math.min(100, overall))}%`);
+
+  const pathId = cached?.currentPathId || localStorage.getItem("nexusCurrentPath") || "python-fundamentals";
   const pathMeta = LEARNING_PATHS.find((p) => p.id === pathId);
-  const pathPct = getPathProgressPercent(pathId);
+  const pathPct = Math.max(0, Math.min(100, cached?.currentPathProgress ?? getPathProgressPercent(pathId)));
   updateEl("activePathLabel", pathMeta?.title || "Python");
   updateEl("pathProgressLabel", `${pathPct}% of path complete`);
 
@@ -121,7 +133,10 @@ export function continueLearning() {
   const pathId = last?.pathId || localStorage.getItem("nexusCurrentPath") || "python-fundamentals";
   showSection("learnSection");
   openCourse(pathId);
-  if (typeof last?.index === "number" && typeof window.openLesson === "function") {
-    window.openLesson(last.index);
+  const lessonIndex = typeof last?.index === "number" ? last.index : 0;
+  if (typeof window.openWorkspaceLesson === "function") {
+    window.openWorkspaceLesson(lessonIndex);
+  } else if (typeof window.openLesson === "function") {
+    window.openLesson(lessonIndex);
   }
 }
