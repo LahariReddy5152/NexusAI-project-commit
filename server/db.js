@@ -1,16 +1,7 @@
 import { DatabaseSync } from "node:sqlite";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+import { getDbPath, ensureDataDirs } from "./data-paths.js";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const dataDir = process.env.NEXUSAI_DATA_DIR || path.join(__dirname, "..", "data");
-if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
-
-const dbPath = path.join(dataDir, "nexusai.db");
-export const db = new DatabaseSync(dbPath);
-
-db.exec(`
+const SCHEMA = `
   PRAGMA journal_mode = WAL;
   PRAGMA foreign_keys = ON;
 
@@ -141,7 +132,42 @@ db.exec(`
     PRIMARY KEY (user_id, state_key),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   );
-`);
+
+  CREATE TABLE IF NOT EXISTS user_stats (
+    user_id TEXT PRIMARY KEY,
+    overall_progress INTEGER DEFAULT 0,
+    day_streak INTEGER DEFAULT 0,
+    hours_learned REAL DEFAULT 0,
+    total_xp INTEGER DEFAULT 0,
+    current_path_id TEXT DEFAULT 'python-fundamentals',
+    current_path_progress INTEGER DEFAULT 0,
+    last_activity_date TEXT,
+    project_minutes INTEGER DEFAULT 0,
+    updated_at INTEGER,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  );
+`;
+
+let _db = null;
+
+function initDb() {
+  if (_db) return _db;
+  ensureDataDirs();
+  _db = new DatabaseSync(getDbPath());
+  _db.exec(SCHEMA);
+  return _db;
+}
+
+export const db = new Proxy(
+  {},
+  {
+    get(_target, prop) {
+      const instance = initDb();
+      const value = instance[prop];
+      return typeof value === "function" ? value.bind(instance) : value;
+    }
+  }
+);
 
 export function parseJson(val, fallback = {}) {
   try {

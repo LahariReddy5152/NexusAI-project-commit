@@ -3,9 +3,8 @@ import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
 import multer from "multer";
 import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
 import { db, getUserByEmail, getUserById, parseJson, saveAppState, loadAppState } from "../db.js";
+import { getUploadsDir, ensureDataDirs } from "../data-paths.js";
 import { requireAuth, signToken } from "../middleware/auth.js";
 import { analyzeResume, tailorResume } from "../services/resume.service.js";
 import { generateAiReply } from "../services/ai.service.js";
@@ -18,15 +17,22 @@ import {
   pushProgressCommit
 } from "../services/github.service.js";
 import { analyzeSpeechTranscript, synthesizeSpeechPayload } from "../services/speech.service.js";
+import {
+  ensureUserStats,
+  getDashboardStats,
+  recordDashboardActivity,
+  syncCourseProgressStats
+} from "../services/dashboard-stats.service.js";
 
 const router = Router();
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const dataRoot = process.env.NEXUSAI_DATA_DIR || path.join(__dirname, "..", "..", "data");
-const uploadsDir = path.join(dataRoot, "uploads");
-fs.mkdirSync(uploadsDir, { recursive: true });
+
+function resolveUploadsDir() {
+  ensureDataDirs();
+  return getUploadsDir();
+}
 
 const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadsDir),
+  destination: (_req, _file, cb) => cb(null, resolveUploadsDir()),
   filename: (_req, file, cb) => cb(null, `${Date.now()}-${file.originalname.replace(/[^a-zA-Z0-9._-]/g, "_")}`)
 });
 const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } });
@@ -77,6 +83,7 @@ router.post("/auth/signup", async (req, res) => {
     Date.now()
   );
   seedNotifications(id);
+  ensureUserStats(id);
 
   res.status(201).json({ success: true, message: "Signup successful" });
 });
@@ -92,15 +99,22 @@ router.post("/auth/login", async (req, res) => {
     return res.status(401).json({ success: false, message: "Invalid credentials" });
   }
 
-  const token = signToken(user.id, !!rememberMe);
+  db.prepare("DELETE FROM sessions WHERE user_id = ? AND expires_at <= ?").run(user.id, Date.now());
+
   const expiresAt = Date.now() + (rememberMe ? 30 : 1) * 24 * 60 * 60 * 1000;
-  db.prepare("INSERT INTO sessions (id, user_id, token, expires_at, remember_me) VALUES (?, ?, ?, ?, ?)").run(
-    uuidv4(),
-    user.id,
-    token,
-    expiresAt,
-    rememberMe ? 1 : 0
-  );
+  let token = signToken(user.id, !!rememberMe);
+  const sessionId = uuidv4();
+
+  try {
+    db.prepare(
+      "INSERT INTO sessions (id, user_id, token, expires_at, remember_me) VALUES (?, ?, ?, ?, ?)"
+    ).run(sessionId, user.id, token, expiresAt, rememberMe ? 1 : 0);
+  } catch {
+    token = signToken(user.id, !!rememberMe);
+    db.prepare(
+      "INSERT INTO sessions (id, user_id, token, expires_at, remember_me) VALUES (?, ?, ?, ?, ?)"
+    ).run(uuidv4(), user.id, token, expiresAt, rememberMe ? 1 : 0);
+  }
 
   res.json({ success: true, message: "Login successful", token, user: publicUser(user) });
 });
@@ -136,12 +150,19 @@ router.post("/auth/reset-password", async (req, res) => {
 
   const hash = await bcrypt.hash(newPassword, 10);
   db.prepare("UPDATE users SET password_hash = ?, reset_token = NULL, reset_expires = NULL WHERE id = ?").run(hash, user.id);
+  db.prepare("DELETE FROM sessions WHERE user_id = ?").run(user.id);
   res.json({ success: true, message: "Password updated successfully" });
 });
 
 router.get("/auth/me", requireAuth, (req, res) => {
   const profile = db.prepare("SELECT data_json FROM profiles WHERE user_id = ?").get(req.user.id);
-  res.json({ success: true, user: publicUser(req.user), profile: parseJson(profile?.data_json, {}) });
+  const stats = getDashboardStats(req.user.id);
+  res.json({
+    success: true,
+    user: publicUser(req.user),
+    profile: parseJson(profile?.data_json, {}),
+    stats
+  });
 });
 
 router.post("/auth/logout", requireAuth, (req, res) => {
@@ -184,11 +205,17 @@ router.get("/progress/courses", requireAuth, (req, res) => {
 });
 
 router.put("/progress/courses/:pathId", requireAuth, (req, res) => {
-  db.prepare(`
-    INSERT INTO course_progress (user_id, path_id, progress_json, updated_at) VALUES (?, ?, ?, ?)
-    ON CONFLICT(user_id, path_id) DO UPDATE SET progress_json = excluded.progress_json, updated_at = excluded.updated_at
-  `).run(req.user.id, req.params.pathId, JSON.stringify(req.body || {}), Date.now());
-  res.json({ success: true });
+  const stats = syncCourseProgressStats(req.user.id, req.params.pathId, req.body || {});
+  res.json({ success: true, stats });
+});
+
+router.get("/dashboard/stats", requireAuth, (req, res) => {
+  res.json({ success: true, stats: getDashboardStats(req.user.id) });
+});
+
+router.post("/dashboard/activity", requireAuth, (req, res) => {
+  const stats = recordDashboardActivity(req.user.id, req.body || {});
+  res.json({ success: true, stats });
 });
 
 router.get("/progress/projects", requireAuth, (req, res) => {
@@ -213,8 +240,8 @@ router.get("/progress/interview", requireAuth, (req, res) => {
 });
 
 router.put("/progress/interview", requireAuth, (req, res) => {
-  saveAppState(req.user.id, "interview", req.body || {});
-  const { sectionId, entry } = req.body || {};
+  const { sectionId, entry, ...state } = req.body || {};
+  saveAppState(req.user.id, "interview", state);
   if (sectionId && entry) {
     db.prepare("INSERT INTO interview_history (id, user_id, section_id, data_json, created_at) VALUES (?, ?, ?, ?, ?)").run(
       uuidv4(),

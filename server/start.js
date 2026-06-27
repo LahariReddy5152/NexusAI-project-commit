@@ -1,6 +1,8 @@
 import { createApp } from "./app.js";
+import { ensureDataDirs } from "./data-paths.js";
 
 export function startServer(options = {}) {
+  ensureDataDirs();
   const host = options.host ?? "127.0.0.1";
   const requestedPort = options.port ?? process.env.PORT ?? 0;
   const app = createApp(options);

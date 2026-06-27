@@ -2,37 +2,43 @@ import { app, BrowserWindow, Notification, ipcMain, shell } from "electron";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
-import { startServer } from "../server/start.js";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const electronDir = path.dirname(fileURLToPath(import.meta.url));
 const isDev = !app.isPackaged;
 
 let mainWindow = null;
 let httpServer = null;
 let serverPort = 0;
 
-function getUserDataDir() {
-  const dir = path.join(app.getPath("userData"), "data");
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  return dir;
+function ensureUserDataDir() {
+  const userData = app.getPath("userData");
+  if (!fs.existsSync(userData)) {
+    fs.mkdirSync(userData, { recursive: true });
+  }
+  return userData;
 }
 
-function getAppRoot() {
-  return isDev ? path.join(__dirname, "..") : app.getAppPath();
+function configureProductionPaths() {
+  process.env.NEXUSAI_DATA_DIR = ensureUserDataDir();
+  process.env.NEXUSAI_PACKAGED = "1";
 }
 
 function getStaticRoot() {
-  return getAppRoot();
+  return isDev ? path.join(electronDir, "..") : app.getAppPath();
 }
 
-function resolveResource(...parts) {
-  const candidate = path.join(getAppRoot(), ...parts);
+function resolveIconPath() {
+  const candidate = path.join(getStaticRoot(), "build", "icon.png");
   if (fs.existsSync(candidate)) return candidate;
-  return path.join(process.resourcesPath, ...parts);
+  return path.join(electronDir, "..", "build", "icon.png");
 }
 
 async function bootServer() {
-  process.env.NEXUSAI_DATA_DIR = getUserDataDir();
+  if (app.isPackaged) {
+    configureProductionPaths();
+  }
+
+  const { startServer } = await import("../server/start.js");
   const { server, port } = await startServer({
     host: "127.0.0.1",
     port: 0,
@@ -44,7 +50,7 @@ async function bootServer() {
 }
 
 function createMainWindow(port) {
-  const iconPath = resolveResource("build", "icon.png");
+  const iconPath = resolveIconPath();
 
   mainWindow = new BrowserWindow({
     width: 1440,
@@ -56,7 +62,7 @@ function createMainWindow(port) {
     icon: iconPath,
     autoHideMenuBar: true,
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
+      preload: path.join(electronDir, "preload.js"),
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: false
@@ -83,7 +89,11 @@ function createMainWindow(port) {
 function registerIpc() {
   ipcMain.handle("nexus-show-notification", (_event, { title, body }) => {
     if (!Notification.isSupported()) return false;
-    const n = new Notification({ title: title || "NexusAI", body: body || "", icon: resolveResource("build", "icon.png") });
+    const n = new Notification({
+      title: title || "NexusAI",
+      body: body || "",
+      icon: resolveIconPath()
+    });
     n.show();
     return true;
   });
