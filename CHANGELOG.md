@@ -4,6 +4,22 @@ All notable changes to NexusAI are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.1.0] - 2026-06-27
+
+### Fixed
+- Packaged Electron `ENOTDIR` startup failure when SQLite paths targeted read-only `app.asar`
+- Deferred server import until `NEXUSAI_DATA_DIR` points to Electron `userData`
+
+### Changed
+- Light mode is the default theme with accessibility contrast improvements across all pages
+- SQLite database path in desktop builds: `%APPDATA%\nexusai\nexusai.db`
+- Lahari branding and refreshed light-mode screenshots in README and release docs
+- Final UI polish for learn workspace, projects, career analyzer, profile, and code lab
+
+### Added
+- Centralized data path module (`server/data-paths.js`) with asar write guard
+- Release notes for v1.1.0 and attached screenshot copy pipeline
+
 ## [1.0.0] - 2026-06-26
 
 ### Added
@@ -40,4 +56,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Executables are unsigned (Windows SmartScreen warning possible)
 - OpenAI live responses require `OPENAI_API_KEY` environment variable
 
+[1.1.0]: https://github.com/LahariReddy5152/NexusAI-project-commit/releases/tag/v1.1.0
 [1.0.0]: https://github.com/LahariReddy5152/NexusAI-project-commit/releases/tag/v1.0.0

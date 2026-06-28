@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/LahariReddy5152/NexusAI-project-commit"><img src="https://img.shields.io/badge/version-1.0.0-8b5cf6?style=flat-square" alt="Version" /></a>
+  <a href="https://github.com/LahariReddy5152/NexusAI-project-commit"><img src="https://img.shields.io/badge/version-1.1.0-8b5cf6?style=flat-square" alt="Version" /></a>
   <a href="https://github.com/LahariReddy5152/NexusAI-project-commit"><img src="https://img.shields.io/badge/platform-Web%20%7C%20Windows-0284c7?style=flat-square" alt="Platform" /></a>
   <a href="https://github.com/LahariReddy5152/NexusAI-project-commit/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-ISC-fb7185?style=flat-square" alt="License" /></a>
 </p>
@@ -106,7 +106,7 @@ flowchart TB
 |---|---|
 | **Web app** | `npm install && npm start` → http://localhost:5000 |
 | **Desktop (dev)** | `npm run electron` |
-| **Windows installer** | [Download v1.0.0](https://github.com/LahariReddy5152/NexusAI-project-commit/releases/tag/v1.0.0) (after release publish) |
+| **Windows installer** | [Download v1.1.0](https://github.com/LahariReddy5152/NexusAI-project-commit/releases/tag/v1.1.0) |
 | **API docs** | http://localhost:5000/api/docs |
 | **Portfolio copy** | [docs/PORTFOLIO.md](docs/PORTFOLIO.md) |
 
@@ -197,8 +197,8 @@ npm run build:dir
 
 | Artifact | Path |
 |----------|------|
-| **Setup installer** | `dist/NexusAI-Setup-1.0.0.exe` |
-| **Portable app** | `dist/NexusAI-Portable-1.0.0.exe` |
+| **Setup installer** | `dist/NexusAI-Setup-1.1.0.exe` |
+| **Portable app** | `dist/NexusAI-Portable-1.1.0.exe` |
 | **Unpacked executable** | `dist/win-unpacked/NexusAI.exe` |
 
 The installer provides:
