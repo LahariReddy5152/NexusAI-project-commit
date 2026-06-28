@@ -9,6 +9,7 @@ import fs from "fs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
+const APP_VERSION = JSON.parse(fs.readFileSync(path.join(ROOT, "package.json"), "utf8")).version;
 const BASE = process.env.VERIFY_BASE || null;
 
 const completed = [];
@@ -451,8 +452,8 @@ async function runUiTests(base) {
 
 async function checkElectron() {
   const distExe = path.join(ROOT, "dist", "win-unpacked", "NexusAI.exe");
-  const portable = path.join(ROOT, "dist", "NexusAI-Portable-1.0.0.exe");
-  const setup = path.join(ROOT, "dist", "NexusAI-Setup-1.0.0.exe");
+  const portable = path.join(ROOT, "dist", `NexusAI-Portable-${APP_VERSION}.exe`);
+  const setup = path.join(ROOT, "dist", `NexusAI-Setup-${APP_VERSION}.exe`);
 
   if (!fs.existsSync(distExe) && !fs.existsSync(portable) && !fs.existsSync(setup)) {
     block("Electron: Installed application launches", "No build artifacts in dist/ — run npm run build:win");

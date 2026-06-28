@@ -1,5 +1,5 @@
 /**
- * Generate portfolio and README screenshots for NexusAI v1.0.0 (light mode)
+ * Generate portfolio and README screenshots for NexusAI v1.1.0 (light mode)
  */
 import { chromium } from "playwright";
 import fs from "fs";
@@ -154,7 +154,7 @@ async function main() {
 <body><div class="card">
   <div class="logo">NEXUS<span>AI</span></div>
   <div class="tag">LEARN · BUILD · GROW</div>
-  <h2>Installing NexusAI 1.0.0 for Lahari</h2>
+  <h2>Installing NexusAI 1.1.0 for Lahari</h2>
   <div class="bar"><div class="fill"></div></div>
   <ul>
     <li>✓ Desktop shortcut</li>
@@ -162,7 +162,7 @@ async function main() {
     <li>✓ Embedded SQLite database</li>
     <li>✓ Virtual Recruiter AI mentor</li>
   </ul>
-  <div class="btn">NexusAI-Setup-1.0.0.exe</div>
+  <div class="btn">NexusAI-Setup-1.1.0.exe</div>
 </div></body></html>`;
 
   const installerPath = path.join(OUT, "_installer-mock.html");
